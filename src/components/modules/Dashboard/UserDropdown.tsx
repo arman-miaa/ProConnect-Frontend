@@ -1,6 +1,6 @@
 "use client";
 
-import LogoutButton from "@/components/shared/LogoutButton";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -56,12 +56,12 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
+        <Button
           onClick={handleLogout}
-          className="cursor-pointer text-red-600"
+          className="w-full text-left bg-destructive text-white  hover:bg-destructive "
         >
-          <LogoutButton />
-        </DropdownMenuItem>
+          Logout
+        </Button>
       </DropdownMenuContent>
     </DropdownMenu>
   );
