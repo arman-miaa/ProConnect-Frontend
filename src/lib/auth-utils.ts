@@ -1,85 +1,105 @@
-export type UserRole = "ADMIN" | "DOCTOR" | "PATIENT";
+// src/constants/routes.ts
 
-// exact : ["/my-profile", "settings"]
-//   patterns: [/^\/dashboard/, /^\/patient/], // Routes starting with /dashboard/* /patient/*
+// ⭐ 1. User Role Type
+export type UserRole = "SUPER_ADMIN" | "ADMIN" | "CLIENT" | "SELLER";
+
+// ⭐ 2. RouteConfig Type
 export type RouteConfig = {
-    exact: string[],
-    patterns: RegExp[],
-}
+  exact: string[];
+  patterns: RegExp[];
+};
 
-export const authRoutes = ["/login", "/register", "/forgot-password", "/reset-password"];
+// ⭐ 3. Auth Routes (Public Routes)
+export const authRoutes = ["/login", "/register", "/forgot-password"];
 
+// ⭐ 4. Common Protected Routes (All authenticated users can access)
 export const commonProtectedRoutes: RouteConfig = {
-    exact: ["/my-profile", "/settings", "/change-password"],
-    patterns: [], // [/password/change-password, /password/reset-password => /password/*]
-}
+  exact: ["/my-profile", "/settings", "/change-password", "/reset-password"],
+  patterns: [],
+};
 
-export const doctorProtectedRoutes: RouteConfig = {
-    patterns: [/^\/doctor/], // Routes starting with /doctor/* , /assitants, /appointments/*
-    exact: [], // "/assistants"
-}
-
+// ⭐ 5. ADMIN + SUPER_ADMIN Routes
 export const adminProtectedRoutes: RouteConfig = {
-    patterns: [/^\/admin/], // Routes starting with /admin/*
-    exact: [], // "/admins"
-}
+  patterns: [/^\/admin/], // Routes starting with /admin/*
+  exact: [],
+};
 
-export const patientProtectedRoutes: RouteConfig = {
-    patterns: [/^\/dashboard/], // Routes starting with /dashboard/*
-    exact: [], // "/dashboard"
-}
+// ⭐ 6. SELLER Routes
+export const sellerProtectedRoutes: RouteConfig = {
+  patterns: [/^\/seller/], // Routes starting with /seller/*
+  exact: [],
+};
 
+// ⭐ 7. CLIENT Routes
+export const clientProtectedRoutes: RouteConfig = {
+  patterns: [/^\/client/], // Routes starting with /dashboard/*
+  exact: [],
+};
+
+// ⭐ 8. Auth Route Checker
 export const isAuthRoute = (pathname: string) => {
-    return authRoutes.some((route: string) => route === pathname);
-}
+  return authRoutes.some((route) => route === pathname);
+};
 
-export const isRouteMatches = (pathname: string, routes: RouteConfig): boolean => {
-    if (routes.exact.includes(pathname)) {
-        return true;
-    }
-    return routes.patterns.some((pattern: RegExp) => pattern.test(pathname))
-    // if pathname === /dashboard/my-appointments => matches /^\/dashboard/ => true
-}
+// ⭐ 9. Pattern + Exact Matcher Function
+export const isRouteMatches = (
+  pathname: string,
+  routes: RouteConfig
+): boolean => {
+  if (routes.exact.includes(pathname)) return true;
+  return routes.patterns.some((pattern) => pattern.test(pathname));
+};
 
-export const getRouteOwner = (pathname: string): "ADMIN" | "DOCTOR" | "PATIENT" | "COMMON" | null => {
-    if (isRouteMatches(pathname, adminProtectedRoutes)) {
-        return "ADMIN";
-    }
-    if (isRouteMatches(pathname, doctorProtectedRoutes)) {
-        return "DOCTOR";
-    }
-    if (isRouteMatches(pathname, patientProtectedRoutes)) {
-        return "PATIENT";
-    }
-    if (isRouteMatches(pathname, commonProtectedRoutes)) {
-        return "COMMON";
-    }
-    return null;
-}
+// ⭐ 10. Get Route Owner (Role)
+export const getRouteOwner = (
+  pathname: string
+): "SUPER_ADMIN" | "ADMIN" | "SELLER" | "CLIENT" | "COMMON" | null => {
+  // both SUPER_ADMIN & ADMIN share same route group
+  if (isRouteMatches(pathname, adminProtectedRoutes)) return "ADMIN";
 
+  if (isRouteMatches(pathname, sellerProtectedRoutes)) return "SELLER";
+
+  if (isRouteMatches(pathname, clientProtectedRoutes)) return "CLIENT";
+
+  if (isRouteMatches(pathname, commonProtectedRoutes)) return "COMMON";
+
+  return null;
+};
+
+// ⭐ 11. Get Default Dashboard Route (Fixed Logic)
 export const getDefaultDashboardRoute = (role: UserRole): string => {
-    if (role === "ADMIN") {
-        return "/admin/dashboard";
-    }
-    if (role === "DOCTOR") {
-        return "/doctor/dashboard";
-    }
-    if (role === "PATIENT") {
-        return "/dashboard";
-    }
-    return "/";
-}
+  if (role === "SUPER_ADMIN" || role === "ADMIN") {
+    return "/admin/dashboard";
+  }
 
-export const isValidRedirectForRole = (redirectPath: string, role: UserRole): boolean => {
-    const routeOwner = getRouteOwner(redirectPath);
+  if (role === "SELLER") {
+    return "/seller/dashboard";
+  }
 
-    if (routeOwner === null || routeOwner === "COMMON") {
-        return true;
-    }
+  if (role === "CLIENT") {
+    return "/client/dashboard";
+  }
 
-    if (routeOwner === role) {
-        return true;
-    }
+  return "/";
+};
 
-    return false;
-}
+// ⭐ 12. Redirect Validation Function (Fixed Logic)
+export const isValidRedirectForRole = (
+  redirectPath: string,
+  role: UserRole
+): boolean => {
+  const routeOwner = getRouteOwner(redirectPath);
+
+  // Unprotected routes and common routes -> always allowed
+  if (routeOwner === null || routeOwner === "COMMON") return true;
+
+  // SUPER_ADMIN + ADMIN can access admin routes
+  if (routeOwner === "ADMIN" && (role === "ADMIN" || role === "SUPER_ADMIN")) {
+    return true;
+  }
+
+  // Other role-specific matched access
+  if (routeOwner === role) return true;
+
+  return false;
+};
