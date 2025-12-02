@@ -82,7 +82,7 @@ export async function proxy(request: NextRequest) {
 
   if (accessToken) {
     const userInfo = await getUserInfo();
-    if (userInfo.needPasswordChange) {
+    if (userInfo?.needPasswordChange) {
       if (pathname !== "/reset-password") {
         const resetPasswordUrl = new URL("/reset-password", request.url);
         resetPasswordUrl.searchParams.set("redirect", pathname);
