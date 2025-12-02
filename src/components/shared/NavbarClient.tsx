@@ -12,7 +12,7 @@ import LogoutButton from "./LogoutButton";
 
 interface NavbarClientProps {
   navItems: Array<{ label: string; href: string }>;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean ;
   userInfo: any;
 }
 

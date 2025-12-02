@@ -2,12 +2,15 @@ import { getUserInfo } from "@/services/auth/getUserInfo";
 import { UserInfo } from "@/types/user.interface";
 import NavbarClient from "./NavbarClient";
 
+
 const PublicNavbar = async () => {
   const userInfo = (await getUserInfo()) as UserInfo | null;
 
-console.log(userInfo);
+  console.log(userInfo);
+  
 
-  const isAuthenticated = !!userInfo;
+  const isAuthenticated = !!userInfo?._id
+
 
   const navItems = [
     { href: "/services", label: "Services" },
