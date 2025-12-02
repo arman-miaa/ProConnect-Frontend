@@ -5,8 +5,8 @@ import { motion,  useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 const stats = [
-  { value: 50000, suffix: "+", label: "Active Users" },
-  { value: 12000, suffix: "+", label: "Verified Sellers" },
+  { value: 12000, suffix: "+", label: "Active Users" },
+  { value: 20000, suffix: "+", label: "Verified Sellers" },
   { value: 2500000, prefix: "$", suffix: "+", label: "Total Transactions" },
   { value: 4.9, suffix: "/5", label: "Average Rating" },
 ];

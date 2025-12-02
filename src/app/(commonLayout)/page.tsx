@@ -1,9 +1,10 @@
-import  Hero  from "@/components/modules/Home/Hero";
+
 import  { FeaturesSection } from "@/components/modules/Home/FeaturesSection";
 import  { StatsSection } from "@/components/modules/Home/StatsSection";
 import { CTASection } from "@/components/modules/Home/CTASection";
 import TopRatedDoctors from "@/components/modules/Home/TopRatedDoctors";
 import Head from "next/head";
+import { Hero } from "@/components/modules/Home/Hero";
 
 export default function Home() {
   return (
