@@ -10,13 +10,12 @@ import { UserInfo } from "@/types/user.interface";
 
 
 const PublicNavbar = async () => {
-  const navItems = [
-    { href: "#", label: "Consultation" },
-    { href: "#", label: "Health Plans" },
-    { href: "#", label: "Medicine" },
-    { href: "#", label: "Diagnostics" },
-    { href: "#", label: "NGOs" },
-  ];
+const navItems = [
+  { href: "/services", label: "Services" },
+  { href: "/how-it-work", label: "How It Work" },
+  { href: "/pricing", label: "Pricing" },
+  { href: "/about", label: "About" },
+];
 
   const accessToken = await getCookie("accessToken");
    const userInfo = (await getUserInfo()) as UserInfo;
