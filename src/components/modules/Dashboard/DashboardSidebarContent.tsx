@@ -14,6 +14,7 @@ interface DashboardSidebarContentProps {
   userInfo: UserInfo;
   navItems: NavSection[];
   dashboardHome: string;
+  
 }
 
 const DashboardSidebarContent = ({

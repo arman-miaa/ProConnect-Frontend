@@ -17,6 +17,7 @@ const DashboardSidebar = async () => {
       userInfo={userInfo}
       navItems={navItems}
       dashboardHome={dashboardHome}
+      
     />
   );
 };
