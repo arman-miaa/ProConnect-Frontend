@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import type React from "react";
 import { useState } from "react";
+import { toast } from "sonner"; 
 import {
   Card,
   CardContent,
@@ -20,18 +22,74 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Mail, MapPin, Phone, Send, MessageSquare, Clock } from "lucide-react";
+import { Mail, MapPin, Phone, Send, MessageSquare } from "lucide-react";
+
+// Initial form state
+const initialFormData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  issueType: "",
+  message: "",
+};
 
 export function ContactSection() {
+  const [formData, setFormData] = useState(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSelectChange = (value: string) => {
+    setFormData({
+      ...formData,
+      issueType: value,
+    });
+  };
+
+  // --- API submit function ---
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setSubmitted(true);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/message`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      // Success Toast
+      toast.success("Message sent successfully!", {
+        description: "We have received your query and will respond shortly.",
+        duration: 5000,
+      });
+
+      // Reset form
+      setFormData(initialFormData);
+    } catch (error: any) {
+      toast.error("Failed to send message", {
+        description: error.message,
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -46,10 +104,11 @@ export function ContactSection() {
           </p>
         </div>
 
-        {/* Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto items-start">
+        {/* Content Grid - items-stretch will ensure both sides take up the same height */}
+        <div className="grid lg:grid-cols-3 gap-10 max-w-6xl mx-auto items-stretch">
           {/* LEFT — CONTACT INFO */}
-          <div className="space-y-5 self-start">
+          {/* Note: The form (right) will stretch the height of this container (left) */}
+          <div className="flex flex-col space-y-5">
             {[
               {
                 icon: Mail,
@@ -69,7 +128,6 @@ export function ContactSection() {
                 title: "Call Us",
                 lines: ["+1 (555) 123-4567", "Mon-Fri, 9am-6pm PST"],
               },
-           
             ].map((item, i) => (
               <Card
                 key={i}
@@ -97,7 +155,7 @@ export function ContactSection() {
             ))}
           </div>
 
-          {/* RIGHT — CONTACT FORM */}
+          {/* RIGHT — CONTACT FORM (Takes up 2/3 of the width) */}
           <Card className="lg:col-span-2 bg-background/60 border-border/50 shadow-lg rounded-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -110,73 +168,117 @@ export function ContactSection() {
             </CardHeader>
 
             <CardContent>
-  
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name */}
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div className="space-y-2">
-                      <Label>First Name</Label>
-                      <Input placeholder="John" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Last Name</Label>
-                      <Input placeholder="Doe" required />
-                    </div>
-                  </div>
-
-                  {/* Email & Phone */}
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div className="space-y-2">
-                      <Label>Email</Label>
-                      <Input
-                        type="email"
-                        placeholder="john@example.com"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Phone (Optional)</Label>
-                      <Input placeholder="+1 (555) 000-0000" />
-                    </div>
-                  </div>
-
-               
-
-                  {/* Message */}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Name */}
+                <div className="grid md:grid-cols-2 gap-5">
                   <div className="space-y-2">
-                    <Label>Message</Label>
-                    <Textarea
-                      rows={5}
-                      placeholder="Tell us how we can help..."
+                    <Label htmlFor="firstName">First Name</Label>
+                    <Input
+                      id="firstName"
+                      placeholder="John"
                       required
-                      className="resize-none"
+                      value={formData.firstName}
+                      onChange={handleChange}
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      placeholder="Doe"
+                      required
+                      value={formData.lastName}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
 
-                  {/* Button */}
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full h-11 text-base flex items-center justify-center gap-2"
+                {/* Email & Phone */}
+                <div className="grid md:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="john@example.com"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone">Phone (Optional)</Label>
+                    <Input
+                      id="phone"
+                      placeholder="+1 (555) 000-0000"
+                      value={formData.phone}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+
+                {/* Issue Type (Added for better categorization) */}
+                <div className="space-y-2">
+                  <Label htmlFor="issueType">I am contacting about...</Label>
+                  <Select
+                    required
+                    value={formData.issueType}
+                    onValueChange={handleSelectChange}
                   >
-                    {isSubmitting ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        Send Message
-                      </>
-                    )}
-                  </Button>
-                </form>
-              
+                    <SelectTrigger className="w-full ">
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      <SelectItem value="general">General Inquiry</SelectItem>
+                      <SelectItem value="support">Technical Support</SelectItem>
+                      <SelectItem value="billing">
+                        Billing/Payment Issue
+                      </SelectItem>
+                      <SelectItem value="partnership">
+                        Partnership Opportunity
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Message */}
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea
+                    id="message"
+                    rows={5}
+                    placeholder="Tell us how we can help..."
+                    required
+                    className="resize-none"
+                    value={formData.message}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                {/* Button */}
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full h-11 text-base flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-primary-foreground/40 border-t-primary-foreground rounded-full animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Send Message
+                    </>
+                  )}
+                </Button>
+              </form>
             </CardContent>
           </Card>
         </div>
       </div>
+    
     </section>
   );
 }
