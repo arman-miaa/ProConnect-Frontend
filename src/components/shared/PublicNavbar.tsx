@@ -2,6 +2,7 @@ import { getUserInfo } from "@/services/auth/getUserInfo";
 import { UserInfo } from "@/types/user.interface";
 import NavbarClient from "./NavbarClient";
 
+export const dynamic = "force-dynamic";
 
 const PublicNavbar = async () => {
   const userInfo = (await getUserInfo()) as UserInfo | null;

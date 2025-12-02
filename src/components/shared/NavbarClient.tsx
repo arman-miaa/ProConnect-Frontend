@@ -14,12 +14,14 @@ interface NavbarClientProps {
   navItems: Array<{ label: string; href: string }>;
   isAuthenticated: boolean ;
   userInfo: any;
+  
 }
 
 export default function NavbarClient({
   navItems,
   isAuthenticated,
   userInfo,
+  
 }: NavbarClientProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
