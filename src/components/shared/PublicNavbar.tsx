@@ -3,7 +3,11 @@ import { Menu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
-import LogoutButton from "./LogoutButton";
+
+import UserDropdown from "../modules/Dashboard/UserDropdown";
+import { getUserInfo } from "@/services/auth/getUserInfo";
+import { UserInfo } from "@/types/user.interface";
+
 
 const PublicNavbar = async () => {
   const navItems = [
@@ -15,10 +19,11 @@ const PublicNavbar = async () => {
   ];
 
   const accessToken = await getCookie("accessToken");
+   const userInfo = (await getUserInfo()) as UserInfo;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur  dark:bg-background/95">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto flex h-15 items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2">
           <span className="text-xl font-bold text-primary">ProConnect</span>
         </Link>
@@ -37,7 +42,7 @@ const PublicNavbar = async () => {
 
         <div className="hidden md:flex items-center space-x-2">
           {accessToken ? (
-            <LogoutButton />
+            <UserDropdown userInfo={userInfo} />
           ) : (
             <Link href="/login">
               <Button>Login</Button>
