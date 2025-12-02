@@ -1,9 +1,22 @@
+import { AboutHero } from "@/components/modules/about/AboutHero";
+import { ContactSection } from "@/components/modules/about/ContactSection";
+import { OurStory } from "@/components/modules/about/OurStory";
+
+import { TeamSection } from "@/components/modules/about/TeamSection";
+import { ValuesSection } from "@/components/modules/about/ValuesSection";
 
 
-const AboutPage = () => {
+export default function AboutPage() {
   return (
-    <div>AboutPage</div>
-  )
+    <main className="min-h-screen bg-background">
+     
+      <AboutHero />
+      <OurStory />
+      <ValuesSection />
+      <TeamSection />
+    
+      <ContactSection />
+    
+    </main>
+  );
 }
-
-export default AboutPage
