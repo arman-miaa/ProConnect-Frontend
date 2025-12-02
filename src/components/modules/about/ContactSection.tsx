@@ -110,24 +110,7 @@ export function ContactSection() {
             </CardHeader>
 
             <CardContent>
-              {submitted ? (
-                <div className="text-center py-14">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <Send className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-1">Message Sent!</h3>
-                  <p className="text-muted-foreground">
-                    Thanks for reaching out — we’ll respond within 24 hours.
-                  </p>
-                  <Button
-                    variant="outline"
-                    className="mt-5"
-                    onClick={() => setSubmitted(false)}
-                  >
-                    Send Another Message
-                  </Button>
-                </div>
-              ) : (
+  
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {/* Name */}
                   <div className="grid md:grid-cols-2 gap-5">
@@ -157,27 +140,7 @@ export function ContactSection() {
                     </div>
                   </div>
 
-                  {/* Subject */}
-                  <div className="space-y-2">
-                    <Label>Subject</Label>
-                    <Select required>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a topic" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="general">General Inquiry</SelectItem>
-                        <SelectItem value="support">
-                          Technical Support
-                        </SelectItem>
-                        <SelectItem value="billing">
-                          Billing Question
-                        </SelectItem>
-                        <SelectItem value="partnership">Partnership</SelectItem>
-                        <SelectItem value="feedback">Feedback</SelectItem>
-                        <SelectItem value="press">Press & Media</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+               
 
                   {/* Message */}
                   <div className="space-y-2">
@@ -209,7 +172,7 @@ export function ContactSection() {
                     )}
                   </Button>
                 </form>
-              )}
+              
             </CardContent>
           </Card>
         </div>

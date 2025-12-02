@@ -5,6 +5,7 @@ import { CTASection } from "@/components/modules/Home/CTASection";
 
 import Head from "next/head";
 import { Hero } from "@/components/modules/Home/Hero";
+import { TestimonialsSection } from "@/components/modules/Home/TestimonialsSection";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
         <FeaturesSection />
       
         <StatsSection />
+        <TestimonialsSection/>
         <CTASection />
       </main>
     </>
