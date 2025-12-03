@@ -18,7 +18,7 @@ interface UserProfileData extends UserInfo {
   contactNumber?: string;
   address?: string;
   bio?: string;
-  currentLocation?: string;
+  phone?: string;
   profilePicture?: string; // ছবিও রুট লেভেলে আছে
 }
 
@@ -180,7 +180,6 @@ const MyProfile = ({ userInfo }: MyProfileProps) => {
                     id="contactNumber"
                     name="contactNumber"
                     defaultValue={userInfo.contactNumber || ""}
-                    required
                     disabled={isPending}
                   />
                 </div>
@@ -190,13 +189,13 @@ const MyProfile = ({ userInfo }: MyProfileProps) => {
                 {userInfo.role === "SELLER" && (
                   <>
                     <div className="space-y-2">
-                      <Label htmlFor="currentLocation">Current Location</Label>
+                      <Label htmlFor="title">Title</Label>
                       <Input
-                        id="currentLocation"
-                        name="currentLocation"
-                        defaultValue={userInfo.currentLocation || ""}
+                        id="title"
+                        name="title"
+                        defaultValue={userInfo.title || ""}
+                        placeholder="e.g., Full Stack Developer"
                         disabled={isPending}
-                        placeholder="e.g., Dhaka, Bangladesh"
                       />
                     </div>
 
@@ -217,10 +216,25 @@ const MyProfile = ({ userInfo }: MyProfileProps) => {
                         id="bio"
                         name="bio"
                         rows={3}
+                        className="resize-none"
                         defaultValue={userInfo.bio || ""}
                         disabled={isPending}
                         placeholder="Tell clients about your expertise and marketplace services..."
                       />
+                    </div>
+                    {/* Skills */}
+
+                    <div className="space-y-2 md:col-span-2">
+                      <Label htmlFor="skills">Skills</Label>
+                      <Input
+                        id="skills"
+                        name="skills"
+                        defaultValue={userInfo.skills?.join(", ") || ""}
+                        placeholder="e.g., Web Development, Graphic Design"
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Separate multiple skills with commas
+                      </p>
                     </div>
                   </>
                 )}

@@ -8,6 +8,7 @@ export interface UserInfo {
   _id: string; // MongoDB ObjectId
   name: string;
   email: string;
+  title: string;
   role: UserRole; // SUPER_ADMIN, ADMIN, CLIENT, SELLER (routes.ts থেকে)
 
   // স্ট্যাটাস এবং ভেরিফিকেশন
@@ -26,7 +27,7 @@ export interface UserInfo {
 
   // সেলার-নির্দিষ্ট ফিল্ডস (Seller-এর ক্ষেত্রে থাকবে, অন্যদের ক্ষেত্রে undefined)
   bio?: string;
-  currentLocation?: string;
+  phone?: string;
   skills?: string[];
   averageRating?: number;
 
