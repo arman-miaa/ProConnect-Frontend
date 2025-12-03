@@ -7,22 +7,29 @@ import { getDefaultDashboardRoute, UserRole } from "./auth-utils";
 export const getCommonNavItems = (role: UserRole): NavSection[] => {
   const defaultDashboard = getDefaultDashboardRoute(role);
 
+  const items: NavSection["items"] = [];
+
+  // শুধুমাত্র অ্যাডমিনদের জন্য Dashboard দেখাবে
+  if (role === "SUPER_ADMIN" || role === "ADMIN") {
+    items.push({
+      title: "Dashboard",
+      href: defaultDashboard,
+      icon: "LayoutDashboard",
+      roles: ["SUPER_ADMIN", "ADMIN"],
+    });
+  }
+
+  // সকলের জন্য My Profile
+  items.push({
+    title: "My Profile",
+    href: `/my-profile`,
+    icon: "User",
+    roles: ["SUPER_ADMIN", "ADMIN", "SELLER", "CLIENT"],
+  });
+
   return [
     {
-      items: [
-        {
-          title: "Dashboard",
-          href: defaultDashboard,
-          icon: "LayoutDashboard",
-          roles: ["SUPER_ADMIN", "ADMIN", "SELLER", "CLIENT"],
-        },
-        {
-          title: "My Profile",
-          href: `/my-profile`,
-          icon: "User",
-          roles: ["SUPER_ADMIN", "ADMIN", "SELLER", "CLIENT"],
-        },
-      ],
+      items,
     },
     {
       title: "Settings & Security",
@@ -53,7 +60,7 @@ export const sellerNavItems: NavSection[] = [
       },
       {
         title: "Create Service",
-        href: "/seller/create-service",
+        href: "/seller/dashboard/create-service",
         icon: "SquarePen",
         roles: ["SELLER"],
       },
@@ -86,11 +93,10 @@ export const sellerNavItems: NavSection[] = [
   {
     title: "Communication & Feedback",
     items: [
-      // ✅ মেসেজিং/চ্যাট অপশন যোগ করার জন্য স্থান রাখা হলো
       {
         title: "Messages",
         href: "/seller/messages",
-        icon: "MessageCircle", // Message Icon
+        icon: "MessageCircle",
         roles: ["SELLER"],
       },
       {
@@ -144,11 +150,10 @@ export const clientNavItems: NavSection[] = [
   {
     title: "Feedback & Alerts",
     items: [
-      // ✅ মেসেজিং/চ্যাট অপশন যোগ করার জন্য স্থান রাখা হলো
       {
         title: "Messages",
         href: "/client/messages",
-        icon: "MessageCircle", // Message Icon
+        icon: "MessageCircle",
         roles: ["CLIENT"],
       },
       {
@@ -162,7 +167,7 @@ export const clientNavItems: NavSection[] = [
 ];
 
 // ----------------------------------------------------------------------
-// 👑 অ্যাডমিন নেভিগেশন আইটেম (SUPER_ADMIN এর জন্য কমন)
+// 👑 অ্যাডমিন নেভিগেশন আইটেম
 // ----------------------------------------------------------------------
 export const adminNavItems: NavSection[] = [
   {
@@ -214,21 +219,16 @@ export const adminNavItems: NavSection[] = [
 ];
 
 // ----------------------------------------------------------------------
-// 🏠 সবার শেষে যুক্ত করার জন্য নতুন Home Section
+// 🏠 Home Section
 // ----------------------------------------------------------------------
-// Note: title: ' ' ব্যবহার করা হয়েছে যেন শুধু বর্ডারটি দেখা যায়
 export const homePageNavSection: NavSection = {
   title: " ",
   items: [
     {
       title: "Home Page",
-      href: "/", // ধরে নেওয়া হলো মূল হোম পেজের রুট '/'
-      icon: "Home", // আপনার আইকন লাইব্রেরি থেকে সঠিক আইকন দিন
+      href: "/",
+      icon: "Home",
       roles: ["SUPER_ADMIN", "ADMIN", "SELLER", "CLIENT"],
-      // ✅ এখানে border/separator যোগ করার জন্য কোনো কাস্টম প্রপার্টি (যেমন: isSeparator)
-      // ব্যবহার করা যেতে পারে, যদি আপনার UI কম্পোনেন্ট এটি সমর্থন করে।
-      // তবে, যেহেতু আপনি একটি নতুন NavSection ব্যবহার করছেন, UI কম্পোনেন্টটি
-      // দুটি সেকশনের মাঝে স্বয়ংক্রিয়ভাবে একটি স্পেস বা বর্ডার দেখাতে পারে।
     },
   ],
 };
@@ -238,8 +238,8 @@ export const homePageNavSection: NavSection = {
 // ----------------------------------------------------------------------
 export const getNavItemsByRole = (role: UserRole): NavSection[] => {
   const commonNavItems = getCommonNavItems(role);
-  let roleSpecificItems: NavSection[] = [];
 
+  let roleSpecificItems: NavSection[] = [];
   switch (role) {
     case "SUPER_ADMIN":
     case "ADMIN":
@@ -256,6 +256,5 @@ export const getNavItemsByRole = (role: UserRole): NavSection[] => {
       break;
   }
 
-  // ✅ সমস্ত আইটেম এবং সবার শেষে নতুন Home Page সেকশন যোগ করা হলো
   return [...commonNavItems, ...roleSpecificItems, homePageNavSection];
 };

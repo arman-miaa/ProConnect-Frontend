@@ -73,11 +73,11 @@ export const getDefaultDashboardRoute = (role: UserRole): string => {
   }
 
   if (role === "SELLER") {
-    return "/seller/dashboard";
+    return "/my-profile";
   }
 
   if (role === "CLIENT") {
-    return "/client/dashboard";
+    return "/my-profile";
   }
 
   return "/";
