@@ -13,43 +13,50 @@ import { deleteCookie, getCookie, setCookie } from "./tokenHandlers";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export async function updateMyProfile(formData: FormData) {
-    try {
-        // Create a new FormData with the data property
-        const uploadFormData = new FormData();
+  try {
+    const uploadFormData = new FormData();
+    const data: any = {};
 
-        // Get all form fields except the file
-        const data: any = {};
-        formData.forEach((value, key) => {
-            if (key !== 'file' && value) {
-                data[key] = value;
-            }
-        });
-
-        // Add the data as JSON string
-        uploadFormData.append('data', JSON.stringify(data));
-
-        // Add the file if it exists
-        const file = formData.get('file');
-        if (file && file instanceof File && file.size > 0) {
-            uploadFormData.append('file', file);
+    formData.forEach((value, key) => {
+      if (key !== "file" && value) {
+        if (key === "skills") {
+          data.skills = String(value)
+            .split(",")
+            .map((s) => s.trim())
+            .filter((s) => s.length > 0);
+        } else {
+          data[key] = value;
         }
+      }
+    });
 
-        const response = await serverFetch.patch(`/user/update-my-profile`, {
-            body: uploadFormData,
-        });
+    uploadFormData.append("data", JSON.stringify(data));
 
-        const result = await response.json();
-
-        revalidateTag("user-info", { expire: 0 });
-        return result;
-    } catch (error: any) {
-        console.log(error);
-        return {
-            success: false,
-            message: `${process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'}`
-        };
+    const file = formData.get("file");
+    if (file && file instanceof File && file.size > 0) {
+      uploadFormData.append("file", file);
     }
+
+    const response = await serverFetch.patch(`/user/update-profile`, {
+      body: uploadFormData,
+    });
+
+    const result = await response.json();
+
+    revalidateTag("user-info", { expire: 0 });
+    return result;
+  } catch (error: any) {
+    console.log(error);
+    return {
+      success: false,
+      message:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Something went wrong",
+    };
+  }
 }
+
 
 // Reset Password
 export async function resetPassword(_prevState: any, formData: FormData) {

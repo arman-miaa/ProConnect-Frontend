@@ -1,17 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  // reactCompiler: true,
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
+        protocol: "https",
         hostname: "res.cloudinary.com",
-        
-      }
-    ]
-  }
+      },
+    ],
+  },
+
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "10mb", // you can increase to "10mb" or "20mb"
+    },
+  },
 };
 
 export default nextConfig;

@@ -58,9 +58,10 @@ export function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+   
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/message`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
