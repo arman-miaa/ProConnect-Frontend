@@ -134,8 +134,8 @@ export const clientNavItems: NavSection[] = [
     title: "My Activities",
     items: [
       {
-        title: "My Projects",
-        href: "/client/my-projects",
+        title: "My Orders",
+        href: "/client/dashboard/my-orders",
         icon: "CalendarCheck",
         roles: ["CLIENT"],
       },
