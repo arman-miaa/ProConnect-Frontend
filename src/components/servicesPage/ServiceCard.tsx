@@ -45,7 +45,7 @@ export function ServiceCard({ service, onClick }: ServiceCardProps) {
             }
             width={32}
             height={32}
-            className="rounded-full"
+            className="rounded-full object-cover w-10 h-10"
           />
           <span className="text-sm font-medium text-foreground">
             {typeof service.sellerId === "string"

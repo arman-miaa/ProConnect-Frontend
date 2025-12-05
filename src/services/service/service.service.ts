@@ -30,7 +30,7 @@ export async function getServiceById(
       cache: "no-store",
     });
     const result = await response.json();
-    console.log("service id......",serviceId);
+  
     if (!result.success) throw new Error("Service not found");
     return result.data;
   } catch (error: any) {
