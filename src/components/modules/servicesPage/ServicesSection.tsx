@@ -17,7 +17,7 @@ interface ServicesSectionProps {
 
 export function ServicesSection({ services }: ServicesSectionProps) {
   const router = useRouter();
- console.log(services);
+
   const handleCardClick = (serviceId: string) => {
     router.push(`/services/${serviceId}`);
   };
