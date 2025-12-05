@@ -1,46 +1,29 @@
+// components/servicesPage/ServiceDetailsSection.tsx
 "use client";
 
 import { useState } from "react";
 import { Star, Clock, Tag } from "lucide-react";
-import { Button } from "../ui/button";
-
-interface IService {
-  _id: string;
-  title: string;
-  description: string;
-  price: number;
-  category: string;
-  image?: string;
-  tags?: string[];
-  deliveryTime: number;
-  averageRating: number;
-  reviewCount: number;
-  sellerId:
-    | string
-    | {
-        name: string;
-        email: string;
-        profilePicture: string;
-      };
-}
+import OrderButton from "../modules/orders/OrderButton";
+import { IService } from "@/types/service.interface";
+import Image from "next/image";
 
 interface Props {
   service: IService;
+  user?: {
+    isLoggedIn: boolean;
+    role?: string; // এটা add করুন
+  };
 }
 
-export function ServiceDetailsSection({ service }: Props) {
-  const [isLiked, setIsLiked] = useState(false);
-
-  const handleOrder = async () => {
-    alert(`Order placed for service: ${service._id}`);
-  };
-
+export function ServiceDetailsSection({ service, user }: Props) {
   return (
     <section className="min-h-screen bg-slate-50 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
         {/* Left - Full Image */}
         <div className="rounded-3xl overflow-hidden shadow-2xl h-full relative group">
-          <img
+                  <Image
+                      width={300}
+                      height={300}
             src={service.image || "https://via.placeholder.com/800x450"}
             alt={service.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -134,13 +117,16 @@ export function ServiceDetailsSection({ service }: Props) {
                 ${service.price}
               </p>
             </div>
-            <Button
-              onClick={handleOrder}
-             
-            >
-              Order Now
-                      </Button>
-                    
+
+            <OrderButton
+              serviceId={service._id!}
+              isLoggedIn={user?.isLoggedIn}
+              userRole={user?.role}
+            />
+
+            <p className="text-center text-slate-400 text-xs">
+              100% satisfaction guaranteed or money back
+            </p>
           </div>
         </div>
       </div>
