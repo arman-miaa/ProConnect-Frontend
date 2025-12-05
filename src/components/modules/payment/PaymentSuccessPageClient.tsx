@@ -1,4 +1,4 @@
-// components/modules/payment/PaymentSuccessPageClient.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,8 +9,8 @@ import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PaymentEscrowStatus from "./PaymentEscrowStatus";
 import { OrderData } from "@/types/orderTypes";
+import { fetchOrderDetails } from "@/services/order/order.service";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
 export default function PaymentSuccessPageClient() {
   const searchParams = useSearchParams();
@@ -20,41 +20,27 @@ export default function PaymentSuccessPageClient() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!orderId || !API_BASE_URL) {
+    if (!orderId) {
+      toast.error("Order ID is missing. Please check your payment history.");
       setLoading(false);
-      if (!orderId)
-        toast.error("Order ID is missing. Please check your payment history.");
       return;
     }
 
-    const fetchOrder = async () => {
+    const getOrder = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${API_BASE_URL}/order/${orderId}`, {
-          credentials: "include",
-        });
-        if (!res.ok) {
-          const err = await res.json();
-          toast.error(err.message || "Failed to fetch order.");
-          setOrder(null);
-          return;
-        }
-        const data = await res.json();
-        if (data.success && data.data) {
-          setOrder(data.data);
-          toast.success("Order details loaded successfully.");
-        } else {
-          toast.error(data.message || "Failed to fetch order.");
-        }
-      } catch (err) {
+        const data = await fetchOrderDetails(orderId); // server action call
+        setOrder(data);
+        toast.success("Order details loaded successfully.");
+      } catch (err: any) {
         console.error(err);
-        toast.error("Network error during order retrieval.");
+        toast.error(err.message || "Failed to fetch order details.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOrder();
+    getOrder();
   }, [orderId]);
 
   if (loading) {
@@ -73,7 +59,7 @@ export default function PaymentSuccessPageClient() {
     );
   }
 
-  if (!order || !orderId) {
+  if (!order) {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen bg-red-50 p-6">
         <div className="p-8 bg-white rounded-xl shadow-2xl text-center border-t-4 border-red-500">
@@ -83,7 +69,7 @@ export default function PaymentSuccessPageClient() {
           </h1>
           <p className="text-slate-600 mb-4">
             The Order ID ({orderId || "N/A"}) is missing or invalid, or you do
-            not have permission to view it. Please contact support.
+            not have permission to view it.
           </p>
           <Button onClick={() => router.push("/client/dashboard/my-orders")}>
             Go to Dashboard
