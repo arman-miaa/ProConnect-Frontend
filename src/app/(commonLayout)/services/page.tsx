@@ -1,10 +1,14 @@
+
 import { ServicesSection } from "@/components/modules/servicesPage/ServicesSection"
+import { getAllServices } from "@/services/service/service.service";
 
 
-const ServicesPage = () => {
+const ServicesPage = async () => {
+  const services = await getAllServices()
+ 
   return (
       <div>
-          <ServicesSection/>
+          <ServicesSection services={services} />
     </div>
   )
 }

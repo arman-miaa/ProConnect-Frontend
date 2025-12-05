@@ -1,5 +1,6 @@
 "use client";
 
+import LogoutButton from "@/components/shared/LogoutButton";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getIconComponent } from "@/lib/icon-mapper";
@@ -82,6 +83,10 @@ const DashboardSidebarContent = ({
 
       {/* User Info at Bottom */}
       <div className="border-t p-4">
+        <span className="w-full">
+        <LogoutButton />
+
+        </span>
         <div className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
             <span className="text-sm font-semibold text-primary">

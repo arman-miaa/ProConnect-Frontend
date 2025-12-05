@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 const PublicNavbar = async () => {
   const userInfo = (await getUserInfo()) as UserInfo | null;
 
-  console.log(userInfo);
+  // console.log(userInfo);
   
 
   const isAuthenticated = !!userInfo?._id
