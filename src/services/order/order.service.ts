@@ -70,12 +70,11 @@ export async function fetchOrderDetails(orderId: string): Promise<OrderData> {
 export async function getAllOrders(): Promise<[] | any> {
   try {
     const response = await serverFetch.get("/order", {
-      cache: "no-store",
-      // next: { tags: ["order"] },
-      next: { revalidate: 0 },
+      cache: "force-cache",
+      next: { tags: ["order"] },
     });
     const result = await response.json();
-   
+   console.log("=============================",result);
     if (!result.success) throw new Error("Failed to fetch order");
     return result.data;
   } catch (error: any) {
