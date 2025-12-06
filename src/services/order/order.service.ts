@@ -70,11 +70,13 @@ export async function fetchOrderDetails(orderId: string): Promise<OrderData> {
 export async function getAllOrders(): Promise<[] | any> {
   try {
     const response = await serverFetch.get("/order", {
-      cache: "force-cache",
-      next: { tags: ["order"] },
+      next: {
+        tags: ["order"], // 💡 এই ট্যাগটি যুক্ত করুন
+        revalidate: 0, // এটিকে নিশ্চিত করুন
+      },
     });
     const result = await response.json();
-   console.log("=============================",result);
+   
     if (!result.success) throw new Error("Failed to fetch order");
     return result.data;
   } catch (error: any) {

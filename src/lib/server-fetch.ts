@@ -15,14 +15,14 @@ const serverFetchHelper = async (endpoint: string, options: RequestInit): Promis
     }
 
     const response = await fetch(`${BACKEND_API_URL}${endpoint}`, {
-      credentials: "include",
-      headers: {
-        Cookie: accessToken ? `accessToken=${accessToken}` : "",
-        ...headers,
-        // ...(accessToken ? { "Authorization": `Bearer ${accessToken}` } : {}),
-        // ...(accessToken ? { "Authorization": accessToken } : {}),
-      },
-      ...restOptions,
+        headers: {
+            Cookie: accessToken ? `accessToken=${accessToken}` : "",
+            ...headers,
+            // ...(accessToken ? { "Authorization": `Bearer ${accessToken}` } : {}),
+            // ...(accessToken ? { "Authorization": accessToken } : {}),
+        },
+        ...restOptions,
+     
     });
 
     return response;
