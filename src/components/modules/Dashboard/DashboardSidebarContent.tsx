@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { NavSection } from "@/types/dashboard.interface";
 import { UserInfo } from "@/types/user.interface";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -15,7 +16,6 @@ interface DashboardSidebarContentProps {
   userInfo: UserInfo;
   navItems: NavSection[];
   dashboardHome: string;
-  
 }
 
 const DashboardSidebarContent = ({
@@ -24,16 +24,50 @@ const DashboardSidebarContent = ({
   dashboardHome,
 }: DashboardSidebarContentProps) => {
   const pathname = usePathname();
+
   return (
-    <div className="hidden md:flex h-full w-64 flex-col border-r bg-card">
-      {/* Logo/Brand */}
-      <div className="flex h-16 items-center border-b px-6">
-        <Link href={dashboardHome} className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-primary">ProConnect</span>
+    <div className="hidden md:flex h-full w-64 flex-col border-r bg-card shadow-lg">
+      {/* ---------------- Top Logo ---------------- */}
+      <div className="flex h-16 items-center justify-center border-b px-6">
+        <Link href={dashboardHome} className="text-xl font-bold text-primary">
+          ProConnect
         </Link>
       </div>
 
-      {/* Navigation */}
+      {/* ---------------- User Info ---------------- */}
+      <div className="flex flex-col items-center px-6 py-6 border-b space-y-2 bg-linear-to-b from-primary/5 to-transparent">
+        {/* Avatar */}
+        <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-primary flex items-center justify-center bg-primary/10">
+          {userInfo.profilePicture ? (
+            <Image
+              width={200}
+              height={200}
+              src={userInfo.profilePicture}
+              alt={userInfo.name}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="text-3xl font-bold text-primary">
+              {userInfo.name.charAt(0).toUpperCase()}
+            </span>
+          )}
+        </div>
+
+        {/* Name, Email, Role */}
+        <div className="text-center">
+          <p className="font-semibold text-base truncate">{userInfo.name}</p>
+          {userInfo.email && (
+            <p className="text-xs text-muted-foreground truncate">
+              {userInfo.email}
+            </p>
+          )}
+          <p className="text-xs text-primary font-medium capitalize">
+            {userInfo.role}
+          </p>
+        </div>
+      </div>
+
+      {/* ---------------- Navigation ---------------- */}
       <ScrollArea className="flex-1 px-3 py-4">
         <nav className="space-y-6">
           {navItems.map((section, sectionIdx) => (
@@ -43,6 +77,7 @@ const DashboardSidebarContent = ({
                   {section.title}
                 </h4>
               )}
+
               <div className="space-y-1">
                 {section.items.map((item) => {
                   const isActive = pathname === item.href;
@@ -53,9 +88,9 @@ const DashboardSidebarContent = ({
                       key={item.href}
                       href={item.href}
                       className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all",
+                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200",
                         isActive
-                          ? "bg-primary text-primary-foreground"
+                          ? "bg-primary text-primary-foreground shadow"
                           : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                       )}
                     >
@@ -73,33 +108,18 @@ const DashboardSidebarContent = ({
                   );
                 })}
               </div>
+
               {sectionIdx < navItems.length - 1 && (
-                <Separator className="my-4" />
+                <Separator className="my-2" />
               )}
             </div>
           ))}
         </nav>
       </ScrollArea>
 
-      {/* User Info at Bottom */}
-      <div className="border-t p-4">
-        <span className="w-full">
+      {/* ---------------- Logout Button at Bottom ---------------- */}
+      <div className="w-full p-4 ">
         <LogoutButton />
-
-        </span>
-        <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-            <span className="text-sm font-semibold text-primary">
-              {userInfo.name.charAt(0).toUpperCase()}
-            </span>
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <p className="text-sm font-medium truncate">{userInfo.name}</p>
-            <p className="text-xs text-muted-foreground capitalize">
-              {userInfo.role.toLowerCase()}
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -20,28 +20,26 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
   }
 
   // সকলের জন্য My Profile
-  items.push({
-    title: "My Profile",
-    href: `/my-profile`,
-    icon: "User",
-    roles: ["SUPER_ADMIN", "ADMIN", "SELLER", "CLIENT"],
-  });
+  items.push(
+    {
+      title: "My Profile",
+      href: `/my-profile`,
+      icon: "User",
+      roles: ["SUPER_ADMIN", "ADMIN", "SELLER", "CLIENT"],
+    },
+    {
+      title: "Change Password",
+      href: "/change-password",
+      icon: "KeyRound",
+      roles: ["SUPER_ADMIN", "ADMIN", "SELLER", "CLIENT"],
+    }
+  );
 
   return [
     {
       items,
     },
-    {
-      title: "Settings & Security",
-      items: [
-        {
-          title: "Change Password",
-          href: "/change-password",
-          icon: "KeyRound",
-          roles: ["SUPER_ADMIN", "ADMIN", "SELLER", "CLIENT"],
-        },
-      ],
-    },
+  
   ];
 };
 
@@ -50,58 +48,34 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
 // ----------------------------------------------------------------------
 export const sellerNavItems: NavSection[] = [
   {
-    title: "Service Management",
     items: [
       {
         title: "My Services",
-        href: "/seller/services-management",
+        href: "/seller/dashboard/services",
         icon: "ListOrdered",
         roles: ["SELLER"],
       },
       {
-        title: "Create Service",
-        href: "/seller/dashboard/create-service",
-        icon: "SquarePen",
-        roles: ["SELLER"],
-      },
-    ],
-  },
-  {
-    title: "Finance & Projects",
-    items: [
-      {
-        title: "My Projects",
-        href: "/seller/project-management",
-        icon: "Trello",
-        badge: "5",
+        title: "All Orders",
+        href: "/all-orders",
+        icon: "ShoppingCart",
         roles: ["SELLER"],
       },
       {
         title: "Payment History",
-        href: "/seller/payment-history",
+        href: "/seller/dashboard/payment-history",
         icon: "Receipt",
         roles: ["SELLER"],
       },
       {
         title: "Earnings & Withdraw",
-        href: "/seller/earnings",
+        href: "/seller/dashboard/earnings",
         icon: "DollarSign",
         roles: ["SELLER"],
       },
-    ],
-  },
-  {
-    title: "Communication & Feedback",
-    items: [
       {
-        title: "Messages",
-        href: "/seller/messages",
-        icon: "MessageCircle",
-        roles: ["SELLER"],
-      },
-      {
-        title: "My Reviews",
-        href: "/seller/reviews",
+        title: "Client Reviews",
+        href: "/seller/dashboard/reviews",
         icon: "Star",
         roles: ["SELLER"],
       },
@@ -114,7 +88,6 @@ export const sellerNavItems: NavSection[] = [
 // ----------------------------------------------------------------------
 export const clientNavItems: NavSection[] = [
   {
-    title: "Service Discovery",
     items: [
       {
         title: "Find Services",
@@ -123,17 +96,6 @@ export const clientNavItems: NavSection[] = [
         roles: ["CLIENT"],
       },
       {
-        title: "Favorites",
-        href: "/client/favourites",
-        icon: "Heart",
-        roles: ["CLIENT"],
-      },
-    ],
-  },
-  {
-    title: "My Activities",
-    items: [
-      {
         title: "My Orders",
         href: "/all-orders",
         icon: "CalendarCheck",
@@ -141,24 +103,13 @@ export const clientNavItems: NavSection[] = [
       },
       {
         title: "My Transactions",
-        href: "/client/transactions",
+        href: "/client/dashboard/transactions",
         icon: "CreditCard",
         roles: ["CLIENT"],
       },
-    ],
-  },
-  {
-    title: "Feedback & Alerts",
-    items: [
       {
-        title: "Messages",
-        href: "/client/messages",
-        icon: "MessageCircle",
-        roles: ["CLIENT"],
-      },
-      {
-        title: "Reviews & Ratings",
-        href: "/client/reviews",
+        title: "My Reviews",
+        href: "/client/dashboard/reviews",
         icon: "MessageSquare",
         roles: ["CLIENT"],
       },
@@ -171,46 +122,47 @@ export const clientNavItems: NavSection[] = [
 // ----------------------------------------------------------------------
 export const adminNavItems: NavSection[] = [
   {
-    title: "User Management",
     items: [
       {
         title: "Admins",
-        href: "/admin/admins-management",
+        href: "/admin/dashboard/admins-management",
         icon: "Shield",
         roles: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         title: "Sellers Management",
-        href: "/admin/sellers-management",
+        href: "/admin/dashboard/sellers-management",
         icon: "Users",
         roles: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         title: "Clients Management",
-        href: "/admin/clients-management",
+        href: "/admin/dashboard/clients-management",
         icon: "UserSquare",
         roles: ["SUPER_ADMIN", "ADMIN"],
       },
-    ],
-  },
-  {
-    title: "Marketplace Management",
-    items: [
       {
-        title: "Service Verification",
-        href: "/admin/service-verification",
-        icon: "CheckCircle",
+        title: "All Orders",
+        href: "/all-orders",
+        icon: "ShoppingCart",
         roles: ["SUPER_ADMIN", "ADMIN"],
       },
       {
+        title: "All Reviews",
+        href: "/admin/dashboard/reviews",
+        icon: "Star",
+        roles: ["SUPER_ADMIN", "ADMIN"],
+      },
+
+      {
         title: "Reports & Disputes",
-        href: "/admin/reports-management",
+        href: "/admin/dashboard/reports-management",
         icon: "AlertTriangle",
         roles: ["SUPER_ADMIN", "ADMIN"],
       },
       {
         title: "Transactions",
-        href: "/admin/transactions",
+        href: "/admin/dashboard/transactions",
         icon: "DollarSign",
         roles: ["SUPER_ADMIN", "ADMIN"],
       },
@@ -222,7 +174,7 @@ export const adminNavItems: NavSection[] = [
 // 🏠 Home Section
 // ----------------------------------------------------------------------
 export const homePageNavSection: NavSection = {
-  title: " ",
+
   items: [
     {
       title: "Home Page",
