@@ -1,9 +1,27 @@
+// app/seller/dashboard/payment-history/page.tsx
+
+import TransactionTable from "@/components/modules/payment/TransactionTable";
+import { getSellerPaymentHistory } from "@/services/transaction/transaction.service";
+
+export default async function SellerPaymentHistoryPage() {
+  const history = await getSellerPaymentHistory();
 
 
-const TransactionPage = () => {
+  // সেলারের জন্য টেবিলের কলাম ডেটা সেট করুন
+  const columns = [
+    { header: "Type", accessorKey: "type" }, // EARNINGS, WITHDRAWAL, REFUND
+    { header: "Net Amount", accessorKey: "amount" },
+    { header: "Order ID", accessorKey: "relatedOrder" },
+    { header: "Status", accessorKey: "status" },
+    { header: "Date", accessorKey: "createdAt" },
+  ];
+
   return (
-    <div>TransactionPage</div>
-  )
+    <div>
+      <h2 className="text-2xl font-bold mb-4">
+        💰 Payment History (Earnings & Withdrawals)
+      </h2>
+      <TransactionTable data={history} columns={columns} />
+    </div>
+  );
 }
-
-export default TransactionPage
