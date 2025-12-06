@@ -7,7 +7,7 @@ import { revalidateTag } from "next/cache";
 // -------------------------------------------------------------------------
 // ১. 📝 নতুন রিভিউ তৈরি (POST /reviews) - CLIENT
 // -------------------------------------------------------------------------
-// ✅ সরাসরি export করা হলো
+
 export async function submitReview(payload: {
   orderId: string;
   rating: number;
@@ -29,8 +29,30 @@ revalidateTag("my-reviews", { expire: 0 });
   }
 }
 
+
 // -------------------------------------------------------------------------
-// ২. 🔍 নির্দিষ্ট সার্ভিসের রিভিউ দেখা (GET /reviews/service/:serviceId) - PUBLIC
+// 🏢 ADMIN সব রিভিউ fetch করা (GET /reviews/admin/all) - ADMIN
+// -------------------------------------------------------------------------
+export async function getAllReviews(): Promise<any> {
+  try {
+    const response = await serverFetch.get(`/review/admin/all`, {
+      next: { tags: ["all-reviews"], revalidate: 3600 },
+    });
+    const result = await response.json();
+
+    if (!result.success) {
+      if (response.status === 404) return [];
+      throw new Error(result.message || "Failed to fetch all reviews");
+    }
+    return result.data;
+  } catch (error: any) {
+    throw new Error(
+      error.message || "Server error while fetching all reviews"
+    );
+  }
+}
+
+
 // -------------------------------------------------------------------------
 // ✅ সরাসরি export করা হলো
 export async function getReviewsByServiceId(serviceId: string): Promise<any> {
@@ -54,11 +76,10 @@ export async function getReviewsByServiceId(serviceId: string): Promise<any> {
 
 // -------------------------------------------------------------------------
 // ৩. 💼 সেলারের সমস্ত সার্ভিসের রিভিউ দেখা (GET /reviews/seller/:sellerId) - PUBLIC
-// -------------------------------------------------------------------------
-// ✅ সরাসরি export করা হলো
+
 export async function getReviewsBySellerId(sellerId: string): Promise<any> {
   try {
-    const response = await serverFetch.get(`/reviews/seller/${sellerId}`, {
+    const response = await serverFetch.get(`/review/seller/${sellerId}`, {
       next: { tags: ["seller-reviews"], revalidate: 3600 },
     });
     const result = await response.json();
@@ -77,11 +98,10 @@ export async function getReviewsBySellerId(sellerId: string): Promise<any> {
 
 // -------------------------------------------------------------------------
 // ৪. 👤 ক্লায়েন্টের দেওয়া নিজস্ব রিভিউ দেখা (GET /reviews/my-reviews) - CLIENT
-// -------------------------------------------------------------------------
-// ✅ সরাসরি export করা হলো
+
 export async function getMyReviews(): Promise<any> {
   try {
-    const response = await serverFetch.get(`/reviews/my-reviews`, {
+    const response = await serverFetch.get(`/review/my-reviews`, {
       cache: "no-store",
       next: { tags: ["my-reviews"] },
     });
@@ -97,12 +117,7 @@ export async function getMyReviews(): Promise<any> {
   }
 }
 
-// review.service.ts (ফাইলের শেষে যোগ করুন)
-// ...
-// -------------------------------------------------------------------------
-// ৫. 💡 ক্লায়েন্ট রিভিউ দিয়েছে কিনা তা চেক করা (getMyReviews ব্যবহার করে) - CLIENT
-// -------------------------------------------------------------------------
-// review.service.ts
+
 export async function checkIfReviewed(orderId: string): Promise<boolean> {
   try {
     const myReviews = await getMyReviews();

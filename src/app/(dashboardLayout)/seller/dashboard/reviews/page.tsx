@@ -1,9 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
+import ReviewCard from "@/components/modules/review/ReviewCard";
+import { getReviewsBySellerId } from "@/services/review/review.service";
+import { getUserInfo } from "@/services/auth/getUserInfo";
 
-const MyReviewsPage = () => {
-  return (
-    <div>MyReviewsPage</div>
-  )
+export default async function SellerReviewsPage() {
+const user = await getUserInfo();
+const reviews = await getReviewsBySellerId(user._id);
+return (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {reviews.map((r:any) => (
+      <ReviewCard key={r._id} review={r} role="SELLER" />
+    ))}
+  </div>
+);
+
 }
-
-export default MyReviewsPage
