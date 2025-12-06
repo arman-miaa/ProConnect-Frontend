@@ -38,7 +38,7 @@ const DashboardSidebarContent = ({
       <ScrollArea className="flex-1 overflow-y-auto">
         <div className="px-6 py-6 space-y-6">
           {/* ---------------- User Info ---------------- */}
-          <div className="flex flex-col items-center space-y-2 ">
+          <div className="flex flex-col items-center space-y-2  ">
             <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-primary flex items-center justify-center bg-primary/10">
               {userInfo.profilePicture ? (
                 <Image
@@ -70,7 +70,7 @@ const DashboardSidebarContent = ({
           </div>
 
           {/* ---------------- Navigation ---------------- */}
-          <nav className="space-y-6">
+          <nav className="space-y-6 border-t pt-2 -mt-3 ">
             {navItems.map((section, sectionIdx) => (
               <div key={sectionIdx}>
                 {section.title && (

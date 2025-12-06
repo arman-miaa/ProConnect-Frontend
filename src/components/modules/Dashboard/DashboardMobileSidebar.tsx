@@ -73,7 +73,7 @@ const DashboardMobileSidebar = ({
           </div>
 
           {/* ---------------- Navigation ---------------- */}
-          <nav className="space-y-6">
+          <nav className="space-y-6 border-t pt-2 -mt-4 ">
             {navItems.map((section, sectionIdx) => (
               <div key={sectionIdx}>
                 {section.title && (
