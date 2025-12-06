@@ -63,14 +63,18 @@ const ReviewCard = ({ review, role }: ReviewCardProps) => {
                   <span className="font-medium">Order ID:</span>{" "}
                   {review.orderId}
                 </p>
+
+                <p>
+                  <span className="font-medium">Service ID:</span>{" "}
+                  {review.serviceId?._id || "N/A"}
+                </p>
+
                 <p>
                   <span className="font-medium">Created:</span>{" "}
                   {new Date(review.createdAt).toLocaleString()}
                 </p>
               </>
             )}
-
-       
           </>
         )}
       </div>
