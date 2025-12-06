@@ -71,7 +71,8 @@ export async function getAllOrders(): Promise<[] | any> {
   try {
     const response = await serverFetch.get("/order", {
       cache: "no-store",
-      next: { tags: ["order"] },
+      // next: { tags: ["order"] },
+      next: { revalidate: 0 },
     });
     const result = await response.json();
    
