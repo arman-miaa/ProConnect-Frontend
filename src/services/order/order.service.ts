@@ -18,6 +18,7 @@ export async function createOrder(payload: CreateOrderPayload) {
     });
     const data = await response.json();
     if (!data.success) throw new Error(data.message || "Order creation failed");
+    revalidateTag("order", { expire: 0 });
     return data.data;
   } catch (error: any) {
     console.error("createOrder error:", error);
@@ -69,7 +70,7 @@ export async function fetchOrderDetails(orderId: string): Promise<OrderData> {
 export async function getAllOrders(): Promise<[] | any> {
   try {
     const response = await serverFetch.get("/order", {
-      cache: "force-cache",
+      cache: "no-store",
       next: { tags: ["order"] },
     });
     const result = await response.json();

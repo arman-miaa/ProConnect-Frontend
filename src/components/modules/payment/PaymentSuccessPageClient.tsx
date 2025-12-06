@@ -200,7 +200,7 @@ export default function PaymentSuccessPageClient() {
 
         {/* Action Button */}
         <div className="mt-10 pt-6 border-t flex justify-center">
-          <Button onClick={() => router.push("/client/dashboard/my-orders")}>
+          <Button onClick={() => router.push("/all-orders")}>
             Go to My Orders
           </Button>
         </div>
