@@ -7,7 +7,7 @@ import { getUserInfo } from "@/services/auth/getUserInfo";
 interface Props {
   params: Promise<{ id: string }>;
 }
-
+export const dynamic = "force-dynamic";
 export default async function ServiceDetailPage({ params }: Props) {
   const { id } = await params;
   const service = await getServiceById(id);
