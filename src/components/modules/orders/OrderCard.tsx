@@ -7,9 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
 import StatusModal from "./StatusModal";
+import Image from "next/image";
+import ReviewModal from "../review/ReviewModal";
 
 export default function OrderCard({ order, role }: any) {
   const [open, setOpen] = useState(false);
+  
 
   return (
     <>
@@ -26,7 +29,10 @@ export default function OrderCard({ order, role }: any) {
         <CardContent className="space-y-4">
           {/* Service Image */}
           {order?.serviceId?.image && (
-            <img
+            <Image
+              alt="iamge"
+              width={150}
+              height={150}
               src={order.serviceId.image}
               className="h-40 w-full object-cover rounded-xl"
             />
@@ -76,6 +82,10 @@ export default function OrderCard({ order, role }: any) {
             )}
           </div>
         </CardContent>
+      {/* Review Button - Client only & Completed order */}
+      {role === "CLIENT" && order.orderStatus === "COMPLETED" && (
+        <ReviewModal orderId={order._id} />
+      )}
       </Card>
 
       <StatusModal open={open} setOpen={setOpen} order={order} role={role} />

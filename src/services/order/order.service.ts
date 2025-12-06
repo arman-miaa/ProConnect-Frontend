@@ -71,8 +71,8 @@ export async function getAllOrders(): Promise<[] | any> {
   try {
     const response = await serverFetch.get("/order", {
       next: {
-        tags: ["order"], // 💡 এই ট্যাগটি যুক্ত করুন
-        revalidate: 0, // এটিকে নিশ্চিত করুন
+        tags: ["order"], 
+        revalidate: 0, 
       },
     });
     const result = await response.json();
