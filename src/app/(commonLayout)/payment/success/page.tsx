@@ -1,5 +1,6 @@
 import PaymentSuccessPageClient from '@/components/modules/payment/PaymentSuccessPageClient'
-import  { Suspense } from 'react'
+import { Suspense } from 'react'
+export const dynamic = "force-dynamic";
 
 const PaymentSuccessPage = () => {
   return (

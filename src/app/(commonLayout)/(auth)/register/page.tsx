@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import RegisterForm from "@/components/register-form";
 import {
   Card,

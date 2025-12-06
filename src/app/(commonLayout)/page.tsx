@@ -6,7 +6,7 @@ import { CTASection } from "@/components/modules/Home/CTASection";
 import Head from "next/head";
 import { Hero } from "@/components/modules/Home/Hero";
 import { TestimonialsSection } from "@/components/modules/Home/TestimonialsSection";
-
+export const dynamic = "force-dynamic";
 export default function Home() {
   return (
     <>

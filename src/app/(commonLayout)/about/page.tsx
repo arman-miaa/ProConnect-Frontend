@@ -1,7 +1,7 @@
 import { AboutHero } from "@/components/modules/about/AboutHero";
 import { ContactSection } from "@/components/modules/about/ContactSection";
 import { OurStory } from "@/components/modules/about/OurStory";
-
+export const dynamic = "force-dynamic";
 import { TeamSection } from "@/components/modules/about/TeamSection";
 import { ValuesSection } from "@/components/modules/about/ValuesSection";
 
