@@ -1,31 +1,23 @@
+import UserTable from "@/components/modules/Admin/userManageMent/UserTable";
+import { getAllUsers, adminUpdateUser } from "@/services/admin/usersManagement";
 
+import { getUserInfo } from "@/services/auth/getUserInfo";
 
+export default async function AdminClientsManagementPage() {
+  const users = await getAllUsers();
+  const clients = users.filter((u) => u.role === "CLIENT");
 
-
-import { TableSkeleton } from "@/components/shared/TableSkeleton";
-
-
-
-import { Suspense } from "react";
-
-const AdminClientsManagementPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) => {
-
-
+  const currentUser = await getUserInfo();
 
   return (
     <div className="space-y-6">
-   
-    
-      <Suspense fallback={<TableSkeleton columns={10} rows={10} />}>
-   
-   
-      </Suspense>
+      <h2 className="text-2xl font-bold">Clients Management</h2>
+
+      <UserTable
+        users={clients}
+        currentUserRole={currentUser?.role}
+        onUpdate={adminUpdateUser}
+      />
     </div>
   );
-};
-
-export default AdminClientsManagementPage;
+}
