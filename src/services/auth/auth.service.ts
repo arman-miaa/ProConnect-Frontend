@@ -57,6 +57,29 @@ export async function updateMyProfile(formData: FormData) {
   }
 }
 
+export async function changePassword(formData: FormData) {
+  const newPassword = formData.get("newPassword") as string;
+  const oldPassword = formData.get("oldPassword") as string;
+
+  const accessToken = await getCookie("accessToken");
+  if (!accessToken) throw new Error("User not authenticated");
+
+  const response = await serverFetch.post("/auth/change-password", {
+    body: JSON.stringify({ oldPassword, newPassword }),
+    headers: {
+      Authorization: accessToken,
+      "Content-Type": "application/json",
+    },
+  });
+
+  const result = await response.json();
+  if (!result.success)
+    throw new Error(result.message || "Password change failed");
+
+  revalidateTag("user-info", { expire: 0 });
+  return result;
+}
+
 
 // Reset Password
 export async function resetPassword(_prevState: any, formData: FormData) {
