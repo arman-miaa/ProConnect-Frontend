@@ -4,6 +4,7 @@
 import { serverFetch } from "@/lib/server-fetch";
 import { IService } from "@/types/service.interface";
 import { getUserInfo } from "../auth/getUserInfo";
+import { revalidateTag } from "next/cache";
 
 // 1️⃣ সমস্ত সার্ভিস fetch করা
 export async function getAllServices(): Promise<IService[] | any> {
@@ -48,6 +49,8 @@ export async function createService(payload: any): Promise<IService | any> {
       headers: { "Content-Type": "application/json" },
     });
     const result = await response.json();
+    revalidateTag("services",{expire:0});
+
     if (!result.success) throw new Error("Failed to create service");
     return result.data;
   } catch (error: any) {

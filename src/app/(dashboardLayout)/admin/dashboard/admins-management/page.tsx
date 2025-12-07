@@ -1,40 +1,37 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// src/app/admin/AdminPage.tsx
 
 
-import TablePagination from "@/components/shared/TablePagination";
-import { TableSkeleton } from "@/components/shared/TableSkeleton";
-import { queryStringFormatter } from "@/lib/formatters";
-import { getAdmins } from "@/services/admin/adminsManagement";
-import { Suspense } from "react";
+import AdminClientPage from "@/components/modules/Admin/AdminsManagement.tsx/AdminClientPage";
+import { getAllAdmins } from "@/services/admin/adminsManagement"; // সার্ভার 
+import { getUserInfo } from "@/services/auth/getUserInfo";
 
-const AdminAdminsManagementPage = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}) => {
-  const searchParamsObj = await searchParams;
-  const queryString = queryStringFormatter(searchParamsObj);
-  const adminsResult = await getAdmins(queryString);
+export default async function AdminPage() {
+  let initialAdmins = [];
+  let userRole = null;
+  let error = null;
 
-  const totalPages = Math.ceil(
-    (adminsResult?.meta?.total || 1) / (adminsResult?.meta?.limit || 1)
-  );
+  try {
+    // 1. সার্ভার-সাইড থেকে অ্যাডমিন ডেটা ফেচ
+    initialAdmins = await getAllAdmins();
+  } catch (err: any) {
+    console.error("Failed to fetch initial admins:", err);
+    error = err.message || "Failed to load initial admin data";
+  }
 
+  try {
+    // 2. সার্ভার-সাইড থেকে ব্যবহারকারীর রোল ফেচ
+    userRole = await getUserInfo();
+  } catch (err) {
+    console.error("Failed to fetch user role on server:", err);
+  }
+
+  // ক্লায়েন্ট কম্পোনেন্টকে সার্ভার থেকে ফেচ করা ডেটা পাস করা
   return (
-    <div className="space-y-6">
-    
-
-      {/* Search, Filters */}
-   
-
-      <Suspense fallback={<TableSkeleton columns={8} rows={10} />}>
-      
-        <TablePagination
-          currentPage={adminsResult?.meta?.page || 1}
-          totalPages={totalPages || 1}
-        />
-      </Suspense>
-    </div>
+    <AdminClientPage
+      initialAdmins={initialAdmins}
+      initialError={error}
+      userRole={userRole.role}
+    />
   );
-};
-
-export default AdminAdminsManagementPage;
+}

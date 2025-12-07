@@ -23,7 +23,8 @@ export async function submitReview(payload: {
 
     revalidateTag("service-reviews", { expire: 0 });
 revalidateTag("my-reviews", { expire: 0 });
-revalidateTag("user-info", { expire: 0 });
+    revalidateTag("user-info", { expire: 0 });
+      revalidateTag("services", { expire: 0 });
     return data.data;
   } catch (error: any) {
     throw new Error(error.message || "Review submit failed");
