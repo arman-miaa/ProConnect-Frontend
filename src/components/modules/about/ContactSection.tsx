@@ -61,7 +61,7 @@ export function ContactSection() {
    
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/message`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_API_URL}/message/create-message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
