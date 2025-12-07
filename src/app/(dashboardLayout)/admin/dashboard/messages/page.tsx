@@ -67,14 +67,14 @@ const AdminMessagesPage = () => {
             className="border rounded-lg shadow-sm p-4 bg-white flex flex-col justify-between w-full"
           >
             <div className="mb-2 grow">
-              <p className="font-semibold break-words">
+              <p className="font-semibold wrap-break-word">
                 {m.firstName} {m.lastName}
               </p>
-              <p className="text-sm text-gray-600 break-words">{m.email}</p>
+              <p className="text-sm text-gray-600 wrap-break-word">{m.email}</p>
               <p className="text-sm text-gray-500">Type: {m.issueType}</p>
 
               {/* Message content scrollable */}
-              <div className="mt-2 text-gray-800 whitespace-pre-line overflow-y-auto max-h-32 pr-2 break-words custom-scrollbar">
+              <div className="mt-2 text-gray-800 whitespace-pre-line overflow-y-auto max-h-32 pr-2 wrap-break-word custom-scrollbar">
                 {m.message}
               </div>
             </div>
