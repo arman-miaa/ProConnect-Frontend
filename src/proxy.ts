@@ -32,8 +32,7 @@ export async function proxy(request: NextRequest) {
 
   // const accessToken = request.cookies.get("accessToken")?.value || null;
 
-    const accessToken = (await getCookie("accessToken")) || null;
-
+  const accessToken = (await getCookie("accessToken")) || null;
 
   let userRole: UserRole | null = null;
   if (accessToken) {
@@ -67,6 +66,10 @@ export async function proxy(request: NextRequest) {
 
   // Rule 2 : User is trying to access open public route
   if (routerOwner === null) {
+    return NextResponse.next();
+  }
+  // Allow email reset password page publicly
+  if (pathname.startsWith("/reset-password")) {
     return NextResponse.next();
   }
 
@@ -106,7 +109,6 @@ export async function proxy(request: NextRequest) {
   if (routerOwner === "COMMON") {
     return NextResponse.next();
   }
-
 
   // Rule 5 : Role Based Protected Routes
   if (routerOwner === "ADMIN") {

@@ -1,14 +1,13 @@
 "use server";
-import { getDefaultDashboardRoute, isValidRedirectForRole, UserRole } from "@/lib/auth-utils";
+
 import { verifyAccessToken } from "@/lib/jwtHanlders";
 import { serverFetch } from "@/lib/server-fetch";
 import { zodValidator } from "@/lib/zodValidator";
-import { resetPasswordSchema } from "@/zod/auth.validation";
+import { forgotPasswordSchema, } from "@/zod/auth.validation";
 import { parse } from "cookie";
-import jwt from "jsonwebtoken";
+
 import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
-import { getUserInfo } from "./getUserInfo";
+
 import { deleteCookie, getCookie, setCookie } from "./tokenHandlers";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -81,91 +80,7 @@ export async function changePassword(formData: FormData) {
 }
 
 
-// Reset Password
-export async function resetPassword(_prevState: any, formData: FormData) {
 
-    const redirectTo = formData.get('redirect') || null;
-
-    // Build validation payload
-    const validationPayload = {
-        newPassword: formData.get("newPassword") as string,
-        confirmPassword: formData.get("confirmPassword") as string,
-    };
-
-    // Validate
-    const validatedPayload = zodValidator(validationPayload, resetPasswordSchema);
-
-    if (!validatedPayload.success && validatedPayload.errors) {
-        return {
-            success: false,
-            message: "Validation failed",
-            formData: validationPayload,
-            errors: validatedPayload.errors,
-        };
-    }
-
-    try {
-
-        const accessToken = await getCookie("accessToken");
-
-        if (!accessToken) {
-            throw new Error("User not authenticated");
-        }
-
-        const verifiedToken = jwt.verify(
-          accessToken as string,
-          process.env.JWT_ACCESS_SECRET!
-        ) as jwt.JwtPayload;
-
-        const userRole: UserRole = verifiedToken.role;
-
-        const user = await getUserInfo();
-        // API Call
-        const response = await serverFetch.post("/auth/reset-password", {
-            body: JSON.stringify({
-                id: user?.id,
-                password: validationPayload.newPassword,
-            }),
-            headers: {
-                "Authorization": accessToken,
-                "Content-Type": "application/json",
-            },
-        });
-
-        const result = await response.json();
-
-        if (!result.success) {
-            throw new Error(result.message || "Reset password failed");
-        }
-
-        if (result.success) {
-            // await get
-            revalidateTag("user-info", { expire: 0 });
-        }
-
-        if (redirectTo) {
-            const requestedPath = redirectTo.toString();
-            if (isValidRedirectForRole(requestedPath, userRole)) {
-                redirect(`${requestedPath}?loggedIn=true`);
-            } else {
-                redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
-            }
-        } else {
-            redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
-        }
-
-    } catch (error: any) {
-        // Re-throw NEXT_REDIRECT errors so Next.js can handle them
-        if (error?.digest?.startsWith("NEXT_REDIRECT")) {
-            throw error;
-        }
-        return {
-            success: false,
-            message: error?.message || "Something went wrong",
-            formData: validationPayload,
-        };
-    }
-}
 
 export async function getNewAccessToken() {
     try {
@@ -280,3 +195,61 @@ export async function getNewAccessToken() {
     }
 
 }
+
+export async function forgotPassword(_prevState: any, formData: FormData) {
+  // Build validation payload
+  const validationPayload = {
+    email: formData.get("email") as string,
+  };
+
+  // Validate
+  const validatedPayload = zodValidator(
+    validationPayload,
+    forgotPasswordSchema
+  );
+
+  if (!validatedPayload.success && validatedPayload.errors) {
+    return {
+      success: false,
+      message: "Validation failed",
+      formData: validationPayload,
+      errors: validatedPayload.errors,
+    };
+  }
+
+  try {
+    // API Call
+    const response = await serverFetch.post("/auth/forgot-password", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: validationPayload.email,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || "Failed to send reset link");
+    }
+
+    return {
+      success: true,
+      message: "Password reset link has been sent to your email!",
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.message || "Something went wrong",
+      formData: validationPayload,
+    };
+  }
+}
+
+
+
+
+
+
+
