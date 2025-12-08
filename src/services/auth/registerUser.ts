@@ -11,7 +11,6 @@ export const registerUser = async (
   formData: any
 ): Promise<any> => {
   try {
-   
     const payload = {
       name: formData.get("name"),
       address: formData.get("address"),
@@ -37,20 +36,19 @@ export const registerUser = async (
     const finalJSONPayload = {
       email: validatedPayload.email,
       password: validatedPayload.password,
-      role: validatedPayload.role, 
+      role: validatedPayload.role,
       name: validatedPayload.name,
       address: validatedPayload.address,
     };
 
-    console.log("data before send",finalJSONPayload);
+    console.log("data before send", finalJSONPayload);
     const res = await serverFetch.post("/user/register", {
       body: JSON.stringify(finalJSONPayload),
-    
+
       headers: { "Content-Type": "application/json" },
     });
 
     const result = await res.json();
-
 
     if (result.success) {
       await loginUser(_currentState, formData);
