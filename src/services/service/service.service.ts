@@ -45,85 +45,6 @@ export async function getServiceById(
   }
 }
 
-// 3️⃣ সার্ভিস create করা
-// FIXED: Error handling and return format for useActionState
-export async function createService(_prevState: any, formData: FormData) {
-  try {
-    const user = await getUserInfo();
-
-    // --- 1. Validation Setup ---
-    const validationPayload = {
-      title: formData.get("title"),
-      description: formData.get("description"),
-      price: formData.get("price"),
-      deliveryTime: formData.get("deliveryTime"),
-      category: formData.get("category"),
-      tags: formData.get("tags"),
-      
-      image: formData.get("image") as File | null,
-    };
-
-    const validatedPayload = zodValidator(validationPayload, serviceZodSchema);
-console.log("validation payload=========",validatedPayload);
-    if (!validatedPayload.success || !validatedPayload.data) {
-      return {
-        success: false,
-        message: "Validation failed",
-        errors: validatedPayload.errors, // Return validation errors
-      };
-    }
-
-
-    
-    // --- 2. Backend Payload Construction ---
-    const backendPayload = {
-      sellerId: user.id,
-      title: validatedPayload.data.title,
-      description: validatedPayload.data.description,
-      price: validatedPayload.data.price,
-      deliveryTime: validatedPayload.data.deliveryTime,
-      category: validatedPayload.data.category,
-      
-      tags: validatedPayload.data.tags,
-    };
-
-    const newForm = new FormData();
-    newForm.append("data", JSON.stringify(backendPayload));
-
-    // Append image if present and valid (checked by Zod)
-    if (validatedPayload.data.image) {
-      newForm.append("file", validatedPayload.data.image as File);
-    }
-
-    console.log("new form data",newForm);
-
-    // --- 3. API Call ---
-    const response = await serverFetch.post("/service", { body: newForm });
-    const result = await response.json();
-
-    console.log("result=================",result);
-
-    // --- 4. Final Response ---
-    if (result.success) {
-      revalidateTag("services",{expire:0});
-      return { success: true, data: result.data };
-    }
-
-    // Handle API failure
-    return {
-      success: false,
-      message: result.message || "Failed to create service via API.",
-      errors: result.errors,
-    };
-  } catch (error: any) {
-    console.error("createService error:", error);
-    return {
-      success: false,
-      message: error.message || "An unexpected error occurred during creation.",
-    };
-  }
-}
-
 export async function getMyServices(): Promise<IService[] | any> {
   try {
     const response = await serverFetch.get(`/service/my-services`, {
@@ -140,15 +61,80 @@ export async function getMyServices(): Promise<IService[] | any> {
   }
 }
 
-// 4️⃣ সার্ভিস update করা
-// FIXED: Error handling and return format for useActionState
+// 3️⃣ সার্ভিস create করা
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+// --- 1️⃣ Create Service ---
+export async function createService(_prevState: any, formData: FormData) {
+  try {
+    const user = await getUserInfo();
+
+    const validationPayload = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      price: formData.get("price"),
+      deliveryTime: formData.get("deliveryTime"),
+      category: formData.get("category"),
+      tags: formData.get("tags"),
+      image: formData.get("image") as File | null,
+    };
+
+    const validatedPayload = zodValidator(validationPayload, serviceZodSchema);
+
+    if (!validatedPayload.success || !validatedPayload.data) {
+      return {
+        success: false,
+        message: "Validation failed",
+        errors: validatedPayload.errors || [],
+      };
+    }
+
+    const backendPayload = {
+      sellerId: user.id,
+      title: validatedPayload.data.title,
+      description: validatedPayload.data.description,
+      price: validatedPayload.data.price,
+      deliveryTime: validatedPayload.data.deliveryTime,
+      category: validatedPayload.data.category,
+      tags: validatedPayload.data.tags,
+    };
+
+    const newForm = new FormData();
+    newForm.append("data", JSON.stringify(backendPayload));
+
+    if (validatedPayload.data.image) {
+      newForm.append("file", validatedPayload.data.image as File);
+    }
+
+    const response = await serverFetch.post("/service", { body: newForm });
+    const result = await response.json();
+
+    if (result.success) {
+      revalidateTag("services", { expire: 0 });
+      return { success: true, data: result.data, errors: [] };
+    }
+
+    return {
+      success: false,
+      message: result.message || "Failed to create service via API.",
+      errors: result.errors || [],
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "Unexpected error during creation",
+      errors: [],
+    };
+  }
+}
+
+// --- 2️⃣ Update Service ---
 export async function updateService(
   serviceId: string,
   _prevState: any,
   formData: FormData
 ) {
   try {
-    // --- 1. Validation Setup ---
     const validationPayload = {
       title: formData.get("title"),
       description: formData.get("description"),
@@ -157,76 +143,61 @@ export async function updateService(
       category: formData.get("category"),
       tags: formData.get("tags"),
       status: formData.get("status"),
-  
       image: formData.get("image") as File | null,
     };
 
-    console.log("data before validate....",validationPayload);
+    const validatedPayload = zodValidator(validationPayload, updateServiceSchema);
 
-    const validatedPayload = zodValidator(
-      validationPayload,
-      updateServiceSchema
-    );
-
-
-    if (!validatedPayload.success && validatedPayload.errors) {
-
-    
+    if (!validatedPayload.success) {
       return {
-        success: validatedPayload.success,
+        success: false,
         message: "Validation failed",
         formData: validationPayload,
-        errors: validatedPayload.errors,
+        errors: validatedPayload.errors || [],
       };
     }
+
     if (!validatedPayload.data) {
       return {
         success: false,
         message: "Validation failed",
         formData: validationPayload,
+        errors: [],
       };
     }
-    // --- 2. Backend Payload Construction ---
-    // Remove image from backendPayload as it's handled separately
+
     const { image, ...restPayload } = validatedPayload.data;
     const backendPayload = { ...restPayload };
 
     const newForm = new FormData();
     newForm.append("data", JSON.stringify(backendPayload));
 
-    // Append image if present (and valid, since Zod passed)
     if (image instanceof File && image.size > 0) {
       newForm.append("file", image);
     }
 
-    console.log("new form data...",newForm);
-    // --- 3. API Call ---
-    const response = await serverFetch.patch(`/service/${serviceId}`, {
-      body: newForm,
-    });
+    const response = await serverFetch.patch(`/service/${serviceId}`, { body: newForm });
     const result = await response.json();
 
-    // --- 4. Final Response ---
     if (result.success) {
-      revalidateTag("services",{expire:0});
-      return { success: true, data: result.data };
+      revalidateTag("services", { expire: 0 });
+      return { success: true, data: result.data, errors: [] };
     }
 
-    // Handle API failure
     return {
       success: false,
       message: result.message || "Failed to update service via API.",
-      errors: result.errors,
+      errors: result.errors || [],
     };
   } catch (error: any) {
-    console.error("updateService error:", error);
     return {
       success: false,
-      message: error.message || "An unexpected error occurred during update.",
-      
+      message: error.message || "Unexpected error during update",
+      errors: [],
     };
   }
 }
+
 
 // 5️⃣ সার্ভিস delete করা
 export async function deleteService(serviceId: string): Promise<boolean> {
