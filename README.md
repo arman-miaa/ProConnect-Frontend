@@ -1,6 +1,6 @@
 # ✨ ProConnect Frontend
 
-![](public/home.png)
+![](./public/home.png)
 
 **ProConnect** is a modern marketplace application designed to connect service providers (Sellers) with service seekers (Clients). This repository houses the powerful, responsive, and high-performance **Frontend Application**, built using **Next.js 16 (App Router), TypeScript, and Tailwind CSS**.
 
