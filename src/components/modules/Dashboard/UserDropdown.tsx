@@ -12,6 +12,7 @@ import {
 import { logoutUser } from "@/services/auth/logoutUser";
 import { UserInfo } from "@/types/user.interface";
 import { Settings, User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 interface UserDropdownProps {
@@ -27,9 +28,19 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="rounded-full">
-          <span className="text-sm font-semibold">
-            {userInfo.name.charAt(0).toUpperCase()}
-          </span>
+                {userInfo.profilePicture ? (
+                      <Image
+                        width={200}
+                        height={200}
+                        src={userInfo.profilePicture}
+                        alt={userInfo.name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-xl font-semibold text-primary">
+                        {userInfo.name.charAt(0).toUpperCase()}
+                      </span>
+                    )}
         </Button>
       </DropdownMenuTrigger>
 

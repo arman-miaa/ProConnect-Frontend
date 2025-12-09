@@ -3,10 +3,10 @@ import Link from "next/link";
 const footerLinks = {
   navigation: [
     { label: "Home", href: "/" },
-    { label: "Services", href: "#services" },
-    { label: "How it Works", href: "#how-it-works" },
-    { label: "Pricing", href: "#pricing" },
-    { label: "About", href: "#about" },
+    { label: "Services", href: "services" },
+    { label: "How it Works", href: "how-it-works" },
+    { label: "Pricing", href: "pricing" },
+    { label: "About", href: "about" },
   ],
   resources: [
     { label: "Documentation", href: "#" },
