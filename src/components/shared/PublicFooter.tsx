@@ -4,20 +4,20 @@ const footerLinks = {
   navigation: [
     { label: "Home", href: "/" },
     { label: "Services", href: "services" },
-    { label: "How it Works", href: "how-it-works" },
+    { label: "How it Works", href: "how-it-work" },
     { label: "Pricing", href: "pricing" },
     { label: "About", href: "about" },
   ],
   resources: [
     { label: "Documentation", href: "#" },
     { label: "API Reference", href: "#" },
-    { label: "Help Center", href: "#" },
+    { label: "Help Center", href: "help-center" },
     { label: "Community", href: "#" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Cookie Policy", href: "#" },
+    { label: "Privacy Policy", href: "privacy-policy" },
+    { label: "Terms of Service", href: "terms-of-service" },
+    { label: "Cookie Policy", href: "cookie-policy" },
   ],
   contact: {
     email: "hello@proconnect.com",
@@ -43,8 +43,9 @@ export function PublicFooter() {
               </span>
             </Link>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
-              A modern service marketplace connecting clients with professional
-              sellers.
+              ProConnect is a modern, scalable online marketplace connecting
+              clients with service providers (Sellers). Our goal is to create a
+              transparent, secure platform for digital service transactions.
             </p>
           </div>
 
