@@ -32,7 +32,7 @@ const ResetPasswordForm = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/v1/auth/reset-password?token=${token}`,
+        `${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/reset-password?token=${token}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
