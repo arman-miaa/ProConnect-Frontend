@@ -25,13 +25,13 @@ export const SellerServiceCard: React.FC<ServiceCardProps> = ({
   const statusClass = statusColors[service.status] || "bg-gray-500 text-white";
 
   return (
-    <div className="bg-slate-700 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 relative">
+    <div className="bg-card rounded-2xl  relative  border-border overflow-hidden group cursor-pointer hover:border-primary/30 transition-colors">
       <Image
         width={200}
         height={300}
         src={service.image || "/placeholder.png"}
         alt={service.title}
-        className="w-full h-48 object-cover"
+        className=" w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
       />
 
       {/* STATUS BADGE */}
@@ -63,15 +63,15 @@ export const SellerServiceCard: React.FC<ServiceCardProps> = ({
       </div>
 
       <div className="p-4 space-y-2">
-        <h2 className="text-xl font-semibold text-white">{service.title}</h2>
-        <p className="text-gray-300 text-sm line-clamp-3">
+        <h2 className="text-xl font-bold text-foreground">{service.title}</h2>
+        <p className="text-foreground text-sm line-clamp-3">
           {service.description}
         </p>
         <div className="flex justify-between items-center mt-2">
-          <span className="text-green-400 font-bold">${service.price}</span>
-          <span className="flex items-center text-yellow-400">
-            <Star className="w-4 h-4 mr-1" /> {service.averageRating || 0} (
-            {service.reviewCount || 0})
+          <span className="text-muted-foreground font-bold">${service.price}</span>
+          <span className="flex items-center ">
+            <Star className="w-4 h-4 mr-1 text-yellow-500 fill-yellow-500" />{" "}
+            {service.averageRating || 0} ({service.reviewCount || 0})
           </span>
         </div>
         <div className="flex flex-wrap gap-2 mt-2">
@@ -84,7 +84,7 @@ export const SellerServiceCard: React.FC<ServiceCardProps> = ({
             </span>
           ))}
         </div>
-        <p className="text-gray-400 text-xs mt-2">
+        <p className="text-gray-700 text-xs mt-2">
           Category: {service.category} | Delivery: {service.deliveryTime} days
         </p>
       </div>

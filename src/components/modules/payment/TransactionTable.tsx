@@ -40,23 +40,44 @@ const getStatusVariant = (status: string) => {
   }
 };
 
+
 // ডেটা রেন্ডার ফাংশন
 const renderValue = (row: any, column: Column) => {
   const value = row[column.accessorKey];
 
+  // STATUS Badge
   if (column.accessorKey === "status") {
     return <Badge variant={getStatusVariant(value)}>{value}</Badge>;
   }
+
+  // AMOUNT / NET AMOUNT
   if (column.accessorKey === "amount" || column.accessorKey === "netAmount") {
     return (
-      <span className="font-semibold text-gray-800">${value.toFixed(2)}</span>
+      <span className="font-semibold text-gray-800">
+        ${Number(value).toFixed(2)}
+      </span>
     );
   }
+
+  // CREATED DATE
   if (column.accessorKey === "createdAt") {
     return new Date(value).toLocaleDateString();
   }
+
+  // ⭐ ORDER ID fallback logic
+  if (column.accessorKey === "relatedOrder") {
+    if (value) return value; // যদি Order ID থাকে
+
+    // যদি withdrawal transaction হয়
+    if (row.type === "WITHDRAWAL") return "Withdrawal Payment";
+
+    // অন্য যেকোনো ক্ষেত্রে
+    return "N/A";
+  }
+
   return value;
 };
+
 
 export default function TransactionTable({
   data,

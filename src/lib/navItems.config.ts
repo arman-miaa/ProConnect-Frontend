@@ -159,12 +159,12 @@ export const adminNavItems: NavSection[] = [
         icon: "MessageCircle",
         roles: ["SUPER_ADMIN", "ADMIN"],
       },
-      {
-        title: "Reports & Disputes",
-        href: "/admin/dashboard/reports-management",
-        icon: "AlertTriangle",
-        roles: ["SUPER_ADMIN", "ADMIN"],
-      },
+      // {
+      //   title: "Reports & Disputes",
+      //   href: "/admin/dashboard/reports-management",
+      //   icon: "AlertTriangle",
+      //   roles: ["SUPER_ADMIN", "ADMIN"],
+      // },
       {
         title: "Transactions",
         href: "/admin/dashboard/transactions",

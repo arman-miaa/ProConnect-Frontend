@@ -12,7 +12,7 @@ export default async function SellerPaymentHistoryPage() {
     { header: "Date", accessorKey: "createdAt" },
     { header: "Type", accessorKey: "type" }, // EARNINGS, WITHDRAWAL, REFUND
     { header: "Amount", accessorKey: "amount" },
-    { header: "Order ID", accessorKey: "relatedOrder" }, // বা referenceId
+    { header: "Order ID", accessorKey: "relatedOrder" }, 
     { header: "Status", accessorKey: "status" },
   ];
 

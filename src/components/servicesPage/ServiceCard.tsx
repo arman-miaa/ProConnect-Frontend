@@ -74,7 +74,7 @@ export function ServiceCard({ service, onClick }: ServiceCardProps) {
             <span className="text-sm">{service.deliveryTime}d delivery</span>
           </div>
           <div>
-            <span className="text-xs text-muted-foreground">From </span>
+            <span className="text-xs text-muted-foreground">Price </span>
             <span className="text-lg font-bold text-foreground">
               ${service.price}
             </span>
