@@ -5,8 +5,16 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Play, Star, Users, Briefcase, Shield } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+
+
+import VideoModal from "@/components/shared/VideoModel";
 
 export function Hero() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const handleCloseModal = () => {
+    setIsPlaying(false);
+  };
   return (
     <section className="relative min-h-screen pt-24 overflow-hidden">
       {/* Background Grid Pattern */}
@@ -55,6 +63,7 @@ export function Hero() {
                 </Button>
               </Link>
               <Button
+                onClick={() => setIsPlaying(true)}
                 size="lg"
                 variant="outline"
                 className="border-border text-foreground hover:bg-secondary h-12 bg-transparent"
@@ -165,6 +174,8 @@ export function Hero() {
                 </div>
               </div>
             </div>
+
+            {isPlaying && <VideoModal onClose={handleCloseModal} />}
           </div>
         </div>
       </div>
