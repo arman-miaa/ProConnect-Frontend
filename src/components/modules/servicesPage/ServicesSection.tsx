@@ -2,14 +2,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search,  } from "lucide-react";
 
 import { IService, ServiceCategory } from "@/types/service.interface";
 import { ServiceCard } from "@/components/servicesPage/ServiceCard";
 import ServiceHeader from "./ServiceHeader";
+import { Pagination } from "@/components/shared/Pagination";
 
 export function ServicesSection() {
   const [services, setServices] = useState<IService[]>([]);
@@ -47,7 +48,7 @@ export function ServicesSection() {
       );
 
       const json = await res.json();
-      console.log(json);
+     
       setServices(json?.data?.data || []);
       setTotalPage(json?.data?.meta?.totalPage || 1);
     } catch (err) {
@@ -180,7 +181,7 @@ export function ServicesSection() {
         )}
 
         {/* PAGINATION */}
-        <div className="flex justify-center items-center gap-4 mt-10">
+        {/* <div className="flex justify-center items-center gap-4 mt-10">
           <Button
             variant="outline"
             disabled={page <= 1}
@@ -202,7 +203,12 @@ export function ServicesSection() {
           >
             Next <ChevronRight className="w-4 h-4" />
           </Button>
-        </div>
+        </div> */}
+        <Pagination
+          page={page}
+          totalPage={totalPage}
+          onPageChange={(newPage) => setPage(newPage)}
+        />
       </div>
     </section>
   );
