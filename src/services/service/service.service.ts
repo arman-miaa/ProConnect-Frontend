@@ -12,20 +12,20 @@ import { revalidateTag } from "next/cache";
 
 
 // 1️⃣ সমস্ত সার্ভিস fetch করা
-export async function getAllServices(): Promise<IService[] | any> {
-  try {
-    const response = await serverFetch.get("/service", {
-      cache: "no-store",
-      next: { tags: ["services"] },
-    });
-    const result = await response.json();
-    if (!result.success) throw new Error("Failed to fetch services");
-    return result.data;
-  } catch (error: any) {
-    console.error("getAllServices error:", error);
-    return [];
-  }
-}
+// export async function getAllServices(): Promise<IService[] | any> {
+//   try {
+//     const response = await serverFetch.get("/service", {
+//       cache: "no-store",
+//       next: { tags: ["services"] },
+//     });
+//     const result = await response.json();
+//     if (!result.success) throw new Error("Failed to fetch services");
+//     return result.data;
+//   } catch (error: any) {
+//     console.error("getAllServices error:", error);
+//     return [];
+//   }
+// }
 
 // 2️⃣ নির্দিষ্ট সার্ভিস fetch করা
 export async function getServiceById(

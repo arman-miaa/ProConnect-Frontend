@@ -1,7 +1,7 @@
 // components/servicesPage/ServiceDetailsSection.tsx
 "use client";
 
-import { useState } from "react";
+
 import { Star, Clock, Tag } from "lucide-react";
 import OrderButton from "../modules/orders/OrderButton";
 import { IService } from "@/types/service.interface";
@@ -16,14 +16,15 @@ interface Props {
 }
 
 export function ServiceDetailsSection({ service, user }: Props) {
+
   return (
     <section className="min-h-screen bg-slate-50 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-10">
         {/* Left - Full Image */}
         <div className="rounded-3xl overflow-hidden shadow-2xl h-full relative group">
-                  <Image
-                      width={300}
-                      height={300}
+          <Image
+            width={300}
+            height={300}
             src={service.image || "https://via.placeholder.com/800x450"}
             alt={service.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -55,16 +56,29 @@ export function ServiceDetailsSection({ service, user }: Props) {
           </div>
 
           {/* Seller Info */}
+          {/* Seller Info */}
           <div className="flex items-center gap-4 p-4 bg-white rounded-2xl shadow border border-slate-200">
-            <img
-              src={
-                typeof service.sellerId === "string"
-                  ? "https://via.placeholder.com/100"
-                  : service.sellerId.profilePicture
-              }
-              alt="Seller"
-              className="w-16 h-16 rounded-full object-cover ring-2 ring-slate-100 shadow"
-            />
+            {typeof service.sellerId === "string" ||
+            !service.sellerId.profilePicture ? (
+              // যদি ছবি না থাকে
+              <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center ring-2 ring-slate-100 shadow">
+                <span className="text-xl font-semibold text-slate-900">
+                  {typeof service.sellerId === "string"
+                    ? "U" // Unknown Seller এর প্রথম অক্ষর
+                    : service.sellerId.name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            ) : (
+              // যদি ছবি থাকে
+              <Image
+                src={service.sellerId.profilePicture}
+                alt={service.sellerId.name}
+                width={40}
+                height={40}
+                className="rounded-full object-cover w-10 h-10"
+              />
+            )}
+
             <div>
               <p className="font-semibold text-slate-900">
                 {typeof service.sellerId === "string"

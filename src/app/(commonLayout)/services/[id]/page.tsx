@@ -16,7 +16,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   if (!service) return <p>Service not found</p>;
 
-  console.log("user info data ", user);
+  // console.log("user info data ", user);
 
   return (
     <ServiceDetailsSection
