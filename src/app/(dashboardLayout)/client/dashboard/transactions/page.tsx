@@ -1,15 +1,26 @@
-// app/seller/dashboard/payment-history/page.tsx
-
 import TransactionTable from "@/components/modules/payment/TransactionTable";
 import { getSellerPaymentHistory } from "@/services/transaction/transaction.service";
 
 export default async function SellerPaymentHistoryPage() {
-  const history = await getSellerPaymentHistory();
+  let history = [];
+  try {
+    history = await getSellerPaymentHistory();
+  } catch (err) {
+    console.error("Failed to fetch payment history:", err);
+    history = [];
+  }
 
+  // fallback
+  if (!history || history.length === 0) {
+    return (
+      <div className="text-center py-20 text-muted-foreground">
+        💸 No payment history available  .
+      </div>
+    );
+  }
 
-  // সেলারের জন্য টেবিলের কলাম ডেটা সেট করুন
   const columns = [
-    { header: "Type", accessorKey: "type" }, // EARNINGS, WITHDRAWAL, REFUND
+    { header: "Type", accessorKey: "type" },
     { header: "Net Amount", accessorKey: "amount" },
     { header: "Order ID", accessorKey: "relatedOrder" },
     { header: "Status", accessorKey: "status" },

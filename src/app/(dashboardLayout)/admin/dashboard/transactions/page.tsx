@@ -1,17 +1,29 @@
-// app/admin/dashboard/transactions/page.tsx
-
 import TransactionTable from "@/components/modules/payment/TransactionTable";
 import { getAllTransactions } from "@/services/transaction/transaction.service";
 
 export default async function AdminTransactionsPage() {
-  const transactions = await getAllTransactions();
+  let transactions = [];
+  try {
+    transactions = await getAllTransactions();
+  } catch (err) {
+    console.error("Failed to fetch transactions:", err);
+    transactions = [];
+  }
 
-  // অ্যাডমিনের জন্য কলাম (সম্পূর্ণ ডেটা দেখানোর জন্য)
+  // fallback
+  if (!transactions || transactions.length === 0) {
+    return (
+      <div className="text-center py-20 text-muted-foreground">
+        💸 No transactions available.
+      </div>
+    );
+  }
+
   const columns = [
     { header: "ID", accessorKey: "_id" },
     { header: "Type", accessorKey: "type" },
     { header: "Amount", accessorKey: "amount" },
-    { header: "User (Seller)", accessorKey: "userId" }, // User ID দেখাতে পারে
+    { header: "User (Seller)", accessorKey: "userId" },
     { header: "Order ID", accessorKey: "relatedOrder" },
     { header: "Status", accessorKey: "status" },
     { header: "Date", accessorKey: "createdAt" },

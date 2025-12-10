@@ -12,12 +12,13 @@ import ReviewModal from "../review/ReviewModal";
 
 export default function OrderCard({ order, role }: any) {
   const [open, setOpen] = useState(false);
-  
+
 
   return (
     <>
       <Card className="rounded-2xl shadow-md hover:shadow-lg transition border p-4">
         <CardHeader>
+   
           <CardTitle className="text-lg font-semibold flex items-center justify-between">
             {order?.serviceId?.title}
             <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
@@ -82,10 +83,10 @@ export default function OrderCard({ order, role }: any) {
             )}
           </div>
         </CardContent>
-      {/* Review Button - Client only & Completed order */}
-      {role === "CLIENT" && order.orderStatus === "COMPLETED" && (
-        <ReviewModal orderId={order._id} />
-      )}
+        {/* Review Button - Client only & Completed order */}
+        {role === "CLIENT" && order.orderStatus === "COMPLETED" && (
+          <ReviewModal orderId={order._id} />
+        )}
       </Card>
 
       <StatusModal open={open} setOpen={setOpen} order={order} role={role} />

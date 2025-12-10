@@ -12,16 +12,17 @@ import { toast } from "sonner";
 
 const AdminMessagesPage = () => {
   const [messages, setMessages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchMessages = async () => {
     setLoading(true);
     try {
       const data = await getAllMessages();
-      setMessages(data);
+      setMessages(data || []); // fallback empty array
     } catch (error: any) {
       console.error(error);
-      toast.error(error.message || "Failed to fetch messages");
+      toast.error(error?.message || "Failed to fetch messages");
+      setMessages([]); // ensure state is array even on error
     } finally {
       setLoading(false);
     }
@@ -41,10 +42,10 @@ const AdminMessagesPage = () => {
     if (result.isConfirmed) {
       try {
         await deleteMessage(message._id);
-        fetchMessages();
-        Swal.fire("Deleted!", "Message has been deleted.", "success");
+        toast.success("Message deleted successfully");
+        fetchMessages(); // refresh list
       } catch (error: any) {
-        toast.error(error.message || "Failed to delete message");
+        toast.error(error?.message || "Failed to delete message");
       }
     }
   };
@@ -53,13 +54,22 @@ const AdminMessagesPage = () => {
     fetchMessages();
   }, []);
 
-  if (loading) return <p className="p-6">Loading messages...</p>;
+  if (loading) {
+    return <p className="p-6 text-center">Loading messages...</p>;
+  }
+
+  if (!messages.length) {
+    return (
+      <div className="p-6 text-center text-muted-foreground">
+        No messages found.
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6 space-y-6">
       <h2 className="text-2xl font-bold">Contact & Support Messages</h2>
 
-      {/* Responsive grid */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {messages.map((m) => (
           <div
@@ -73,7 +83,6 @@ const AdminMessagesPage = () => {
               <p className="text-sm text-gray-600 wrap-break-word">{m.email}</p>
               <p className="text-sm text-gray-500">Type: {m.issueType}</p>
 
-              {/* Message content scrollable */}
               <div className="mt-2 text-gray-800 whitespace-pre-line overflow-y-auto max-h-32 pr-2 wrap-break-word custom-scrollbar">
                 {m.message}
               </div>
