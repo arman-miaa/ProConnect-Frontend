@@ -12,6 +12,7 @@ import {
   DollarSign,
   ArrowRight,
 } from "lucide-react";
+import Link from "next/link";
 
 const clientSteps = [
   {
@@ -205,15 +206,20 @@ export function HowItWorksSection() {
             their business or find the perfect service provider.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Find Services
-            </Button>
-            <Button
-              variant="outline"
-              className="border-border text-foreground hover:bg-secondary bg-transparent"
-            >
-              Become a Seller
-            </Button>
+            <Link href="/services" className="w-full sm:w-auto">
+              <Button className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 h-12">
+                Find Services
+              </Button>
+            </Link>
+
+            <Link href="/register" className="w-full sm:w-auto">
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto border-border text-foreground hover:bg-secondary bg-transparent h-12"
+              >
+                Become a Seller
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

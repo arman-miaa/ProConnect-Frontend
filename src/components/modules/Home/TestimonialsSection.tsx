@@ -7,7 +7,8 @@ const testimonials = [
     name: "Sarah Mitchell",
     role: "Marketing Director",
     company: "TechFlow Inc.",
-    image: "/professional-woman-headshot.png",
+    image:
+      "https://images.unsplash.com/photo-1607746882042-944635dfe10e?crop=faces&fit=crop&w=200&h=200", // updated
     rating: 5,
     content:
       "ProConnect transformed how we hire freelancers. The quality of talent is exceptional, and the escrow system gives us peace of mind on every project.",
@@ -16,7 +17,8 @@ const testimonials = [
     name: "James Rodriguez",
     role: "Freelance Developer",
     company: "Self-employed",
-    image: "/professional-developer-headshot.png",
+    image:
+      "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?crop=faces&fit=crop&w=200&h=200", // updated
     rating: 5,
     content:
       "As a seller, I've tripled my income since joining ProConnect. The platform fee is fair, and clients here actually pay on time!",
@@ -25,7 +27,8 @@ const testimonials = [
     name: "Emily Chen",
     role: "Startup Founder",
     company: "GreenLeaf Studios",
-    image: "/asian-woman-entrepreneur-headshot.jpg",
+    image:
+      "https://st2.depositphotos.com/1011382/10984/i/450/depositphotos_109847860-stock-photo-caucasian-business-woman-portrait.jpg",
     rating: 5,
     content:
       "We built our entire brand identity through ProConnect sellers. The messaging system made collaboration seamless across time zones.",
@@ -34,7 +37,8 @@ const testimonials = [
     name: "Michael Okonkwo",
     role: "UX Designer",
     company: "DesignHub Pro",
-    image: "/african-man-designer-headshot.jpg",
+    image:
+      "https://st.depositphotos.com/1905901/1876/i/450/depositphotos_18765417-stock-photo-african-american-male.jpg",
     rating: 5,
     content:
       "The verification badge really helps me stand out. Clients trust verified sellers more, and I've seen a 40% increase in order requests.",
@@ -43,7 +47,8 @@ const testimonials = [
     name: "Lisa Thompson",
     role: "E-commerce Owner",
     company: "StyleBox",
-    image: "/woman-business-owner-headshot.png",
+    image:
+      "https://st2.depositphotos.com/3489481/7015/i/450/depositphotos_70159165-stock-photo-woman-sitting-at-desk-in.jpg",
     rating: 5,
     content:
       "From logo design to website development, I found everything I needed on ProConnect. The review system helps identify top talent quickly.",
@@ -52,13 +57,13 @@ const testimonials = [
     name: "David Park",
     role: "Content Writer",
     company: "WordCraft Agency",
-    image: "/korean-man-writer-headshot.jpg",
+    image:
+      "https://photo-cdn2.icons8.com/1FO-Fb9X0qaTm9428-M7LqLF8OPcwgNwcWz0SPXKfdU/rs:fit:576:864/czM6Ly9pY29uczgu/bW9vc2UtcHJvZC5h/c3NldHMvYXNzZXRz/L3NhdGEvb3JpZ2lu/YWwvNjY2LzM2M2Y5/NjZkLWJlZmQtNDY1/Yi05MDYzLTU1M2Y3/ZGQyOTFhMy5qcGc.webp",
     rating: 5,
     content:
       "ProConnect's low commission rates mean I keep more of what I earn. Plus, the withdrawal process is fast and hassle-free.",
   },
 ];
-
 export function TestimonialsSection() {
   return (
     <section className="py-24 px-4 bg-secondary/30">

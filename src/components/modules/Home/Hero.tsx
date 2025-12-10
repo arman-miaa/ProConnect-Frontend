@@ -16,7 +16,7 @@ export function Hero() {
     setIsPlaying(false);
   };
   return (
-    <section className="relative min-h-screen pt-24 overflow-hidden">
+    <section className="relative min-h-screen md:pt-24 overflow-hidden">
       {/* Background Grid Pattern */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-size-[64px_64px]" />
 
@@ -51,22 +51,23 @@ export function Hero() {
             </div>
 
             {/* CTA Buttons */}
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/services">
-                {" "}
+              <Link href="/services" className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 h-12"
+                  className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 px-8 h-12"
                 >
                   Find Services
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
+
               <Button
                 onClick={() => setIsPlaying(true)}
                 size="lg"
                 variant="outline"
-                className="border-border text-foreground hover:bg-secondary h-12 bg-transparent"
+                className="w-full sm:w-auto border-border text-foreground hover:bg-secondary h-12 bg-transparent"
               >
                 <Play className="mr-2 h-4 w-4" />
                 Watch Demo
