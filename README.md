@@ -58,7 +58,7 @@ This project emphasizes **scalability**, **responsiveness**, and **maintainabili
 
 ### 💡 Additional Features
 
-* 💬 Messaging between users
+
 * 💰 Wallet & Withdrawal management
 * ⭐ Review & Rating system
 * 📈 Analytics & Dashboard charts
