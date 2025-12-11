@@ -27,7 +27,7 @@ export function ServiceDetailsSection({ service, user }: Props) {
             height={300}
             src={service.image || "https://via.placeholder.com/800x450"}
             alt={service.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-fit transition-transform duration-500 group-hover:scale-105"
           />
         </div>
 
