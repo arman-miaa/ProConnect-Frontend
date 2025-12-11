@@ -70,6 +70,7 @@ export default function ReviewModal({ orderId }: any) {
             placeholder="Write your review..."
             className="mt-4"
             value={comment}
+           
             onChange={(e) => setComment(e.target.value)}
           />
 

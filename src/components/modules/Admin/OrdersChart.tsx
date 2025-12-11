@@ -21,6 +21,7 @@ interface MonthlyOrder {
   month: string;
   completed: number;
   cancelled: number;
+  refunded?: number;
   pending: number;
 }
 
@@ -46,6 +47,7 @@ export function OrdersChart({ monthlyOrders }: OrdersChartProps) {
 
   const ordersData = months.map((m) => {
     const data = monthlyOrders.find((x) => x.month === m);
+    
 
     return {
       month: m,
