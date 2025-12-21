@@ -39,10 +39,10 @@ export default function ChangePasswordForm() {
   };
 
   return (
-    <div className="w-full flex justify-center items-center min-h-screen bg-gray-50 px-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8 border">
+    <div className="w-full flex justify-center items-center min-h-screen bg-background px-4">
+      <div className="w-full max-w-md  shadow-lg rounded-xl p-8 border">
         {/* Title */}
-        <h2 className="text-2xl font-semibold text-gray-800 text-center">
+        <h2 className="text-2xl font-semibold text-gray-600 text-center">
           Change Your Password
         </h2>
         <p className="text-gray-500 text-center text-sm mt-1">
@@ -53,7 +53,7 @@ export default function ChangePasswordForm() {
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           {/* Old Password */}
           <div className="relative">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
               Old Password
             </label>
             <input
@@ -78,7 +78,7 @@ export default function ChangePasswordForm() {
 
           {/* New Password */}
           <div className="relative">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-600 mb-1">
               New Password
             </label>
             <input

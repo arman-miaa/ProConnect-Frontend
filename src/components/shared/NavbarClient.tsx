@@ -9,6 +9,7 @@ import UserDropdown from "../modules/Dashboard/UserDropdown";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { useEffect, useState } from "react";
 import LogoutButton from "./LogoutButton";
+import { ThemeToggleBtn } from "./theme-toggle";
 
 interface NavbarClientProps {
   navItems: Array<{ label: string; href: string }>;
@@ -67,6 +68,8 @@ export default function NavbarClient({
 
         {/* Desktop Auth */}
         <div className="hidden md:flex items-center space-x-2">
+          {/* 🌙 Dark mode icon always visible */}
+          <ThemeToggleBtn />
           {isAuthenticated ? (
             <UserDropdown userInfo={userInfo} />
           ) : (
@@ -77,7 +80,9 @@ export default function NavbarClient({
         </div>
 
         {/* Mobile Menu */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-2">
+          {/* 🌙 Dark mode icon FIRST */}
+          <ThemeToggleBtn />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="outline">
