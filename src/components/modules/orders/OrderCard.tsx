@@ -40,7 +40,7 @@ export default function OrderCard({ order, role }: any) {
           )}
 
           {/* Price Grid */}
-          <div className="grid grid-cols-3 gap-3 text-sm bg-gray-50 p-3 rounded-lg">
+          <div className="grid grid-cols-3 gap-3 text-sm p-3 rounded-lg">
             <div>
               <p className="text-gray-500">Total</p>
               <p className="font-semibold">${order.totalPrice}</p>

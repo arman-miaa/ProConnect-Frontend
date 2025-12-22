@@ -18,11 +18,10 @@ const AdminMessagesPage = () => {
     setLoading(true);
     try {
       const data = await getAllMessages();
-      setMessages(data || []); // fallback empty array
+      setMessages(data || []);
     } catch (error: any) {
-      console.error(error);
       toast.error(error?.message || "Failed to fetch messages");
-      setMessages([]); // ensure state is array even on error
+      setMessages([]);
     } finally {
       setLoading(false);
     }
@@ -30,22 +29,21 @@ const AdminMessagesPage = () => {
 
   const handleDelete = async (message: any) => {
     const result = await Swal.fire({
-      title: `Delete message from "${message.firstName} ${message.lastName}"?`,
-      text: "You won't be able to revert this!",
+      title: "Delete this message?",
+      text: `From ${message.firstName} ${message.lastName}`,
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Delete",
+      confirmButtonColor: "#ef4444",
     });
 
     if (result.isConfirmed) {
       try {
         await deleteMessage(message._id);
-        toast.success("Message deleted successfully");
-        fetchMessages(); // refresh list
+        toast.success("Message deleted");
+        fetchMessages();
       } catch (error: any) {
-        toast.error(error?.message || "Failed to delete message");
+        toast.error(error?.message || "Delete failed");
       }
     }
   };
@@ -55,7 +53,9 @@ const AdminMessagesPage = () => {
   }, []);
 
   if (loading) {
-    return <p className="p-6 text-center">Loading messages...</p>;
+    return (
+      <p className="p-6 text-center text-muted-foreground">Loading messages…</p>
+    );
   }
 
   if (!messages.length) {
@@ -68,34 +68,57 @@ const AdminMessagesPage = () => {
 
   return (
     <div className="p-4 sm:p-6 space-y-6">
-      <h2 className="text-2xl font-bold">Contact & Support Messages</h2>
+      <div>
+        <h2 className="text-2xl font-bold">Contact & Support Messages</h2>
+        <p className="text-sm text-muted-foreground">
+          Messages submitted by users
+        </p>
+      </div>
 
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {messages.map((m) => (
           <div
             key={m._id}
-            className="border rounded-lg shadow-sm p-4 bg-white flex flex-col justify-between w-full"
+            className="group relative rounded-2xl border bg-card text-card-foreground shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
           >
-            <div className="mb-2 grow">
-              <p className="font-semibold wrap-break-word">
-                {m.firstName} {m.lastName}
-              </p>
-              <p className="text-sm text-gray-600 wrap-break-word">{m.email}</p>
-              <p className="text-sm text-gray-500">Type: {m.issueType}</p>
+            {/* Top accent */}
+            <div className="absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-linear-to-r from-indigo-500 to-purple-500" />
 
-              <div className="mt-2 text-gray-800 whitespace-pre-line overflow-y-auto max-h-32 pr-2 wrap-break-word custom-scrollbar">
-                {m.message}
+            <div className="p-5 flex flex-col h-full">
+              {/* Header */}
+              <div className="mb-3">
+                <p className="font-semibold truncate">
+                  {m.firstName} {m.lastName}
+                </p>
+                <p className="text-xs text-muted-foreground break-all">
+                  {m.email}
+                </p>
               </div>
-            </div>
 
-            <div className="flex justify-end mt-4 shrink-0">
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => handleDelete(m)}
-              >
-                Delete
-              </Button>
+              {/* Meta */}
+              <div className="mb-3">
+                <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-xs font-medium">
+                  {m.issueType}
+                </span>
+              </div>
+
+              {/* Message */}
+              <div className="flex-1 overflow-hidden">
+                <p className="text-sm leading-relaxed rounded-lg bg-muted p-3 max-h-40 overflow-y-auto wrap-break-word">
+                  {m.message}
+                </p>
+              </div>
+
+              {/* Actions */}
+              <div className="pt-4 flex justify-end">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleDelete(m)}
+                >
+                  Delete
+                </Button>
+              </div>
             </div>
           </div>
         ))}

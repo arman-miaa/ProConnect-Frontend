@@ -7,79 +7,112 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = ({ review, role }: ReviewCardProps) => {
-  // Rating color
-  const ratingColor =
-    review.rating >= 4
-      ? "bg-green-500"
-      : review.rating === 3
-      ? "bg-yellow-500"
-      : "bg-red-500";
+  if (!review) return null;
+
+  const getRatingStyles = (rating: number) => {
+    if (rating >= 4.5) return "from-emerald-500 to-green-500";
+    if (rating >= 4) return "from-green-500 to-lime-500";
+    if (rating >= 3) return "from-yellow-500 to-orange-400";
+    return "from-orange-500 to-red-500";
+  };
+
+  const ratingGradient = getRatingStyles(review.rating || 0);
 
   return (
-    <div className="border rounded-lg p-4 shadow-sm space-y-3 bg-white hover:shadow-md transition-shadow">
-      {/* Top: Client Name + Rating */}
-      <div className="flex items-center justify-between">
-        <p className="font-semibold text-gray-800">
-          {review.clientId?.name || "Anonymous Client"}
+    <div className="group relative rounded-2xl border border-border bg-card text-card-foreground shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl overflow-hidden">
+      {/* Gradient top accent */}
+      <div
+        className={`absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-linear-to-r ${ratingGradient}`}
+      />
+
+      <div className="p-6 space-y-5">
+        {/* Header */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            {/* Avatar */}
+            <div className="w-10 h-10 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md shrink-0">
+              <span className="text-white font-semibold text-sm">
+                {(review.clientId?.name || "A")[0].toUpperCase()}
+              </span>
+            </div>
+
+            {/* Name & date */}
+            <div className="min-w-0">
+              <p className="font-semibold truncate">
+                {review.clientId?.name || "Anonymous Client"}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {review.createdAt
+                  ? new Date(review.createdAt).toLocaleDateString()
+                  : "N/A"}
+              </p>
+            </div>
+          </div>
+
+          {/* Rating */}
+          <div
+            className={`px-3 py-1.5 rounded-full bg-linear-to-r ${ratingGradient} shadow-md`}
+          >
+            <span className="text-white font-bold text-sm">
+              {review.rating || 0} ★
+            </span>
+          </div>
+        </div>
+
+        {/* Comment */}
+        <p className="text-sm leading-relaxed rounded-xl bg-muted p-4 border">
+          {review.comment || "No comment provided"}
         </p>
-        <span className={`px-2 py-1 rounded text-white ${ratingColor}`}>
-          {review.rating} ★
-        </span>
-      </div>
 
-      {/* Comment */}
-      <p className="text-sm text-gray-600">{review.comment}</p>
+        {/* Meta info */}
+        <div className="pt-4 border-t space-y-3 text-sm">
+          {role !== "CLIENT" && (
+            <InfoRow label="Client" value={review.clientId?.name} />
+          )}
 
-      {/* Divider */}
-      <hr className="border-t border-gray-200" />
+          {role !== "SELLER" && (
+            <InfoRow label="Seller" value={review.sellerId?.name || "N/A"} />
+          )}
 
-      {/* Role-specific info */}
-      <div className="text-xs text-muted-foreground space-y-1">
-        {/* Admin sees all */}
-        {(role === "ADMIN" || role === "SELLER" || role === "CLIENT") && (
-          <>
-            {role !== "CLIENT" && (
-              <p>
-                <span className="font-medium">Client:</span>{" "}
-                {review.clientId?.name}
-              </p>
-            )}
+          <InfoRow label="Service" value={review.serviceId?.title || "N/A"} />
 
-            {role !== "SELLER" && (
-              <p>
-                <span className="font-medium">Seller:</span>{" "}
-                {review.sellerId?.name || "N/A"}
-              </p>
-            )}
-
-            <p>
-              <span className="font-medium">Service:</span>{" "}
-              {review.serviceId?.title || "N/A"}
-            </p>
-
-            {(role === "ADMIN" || role === "SELLER") && (
-              <>
-                <p>
-                  <span className="font-medium">Order ID:</span>{" "}
-                  {review.orderId}
-                </p>
-
-                <p>
-                  <span className="font-medium">Service ID:</span>{" "}
-                  {review.serviceId?._id || "N/A"}
-                </p>
-
-                <p>
-                  <span className="font-medium">Created:</span>{" "}
-                  {new Date(review.createdAt).toLocaleString()}
-                </p>
-              </>
-            )}
-          </>
-        )}
+          {(role === "ADMIN" || role === "SELLER") && (
+            <div className="pt-3 mt-3 border-t space-y-2 text-xs">
+              <CodeRow label="Order ID" value={review.orderId} />
+              <CodeRow
+                label="Service ID"
+                value={review.serviceId?._id || "N/A"}
+              />
+              <InfoRow
+                label="Created"
+                value={new Date(review.createdAt).toLocaleString()}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
+
+/* ---------- Helpers ---------- */
+
+const InfoRow = ({ label, value }: { label: string; value?: string }) => (
+  <div className="flex gap-2">
+    <span className="text-muted-foreground font-medium min-w-[70px]">
+      {label}:
+    </span>
+    <span className="truncate">{value}</span>
+  </div>
+);
+
+const CodeRow = ({ label, value }: { label: string; value?: string }) => (
+  <div className="flex gap-2">
+    <span className="text-muted-foreground font-medium min-w-20">
+      {label}:
+    </span>
+    <code className="rounded bg-muted px-2 py-0.5 font-mono">{value}</code>
+  </div>
+);
 
 export default ReviewCard;

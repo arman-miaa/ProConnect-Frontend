@@ -22,7 +22,7 @@ const UserActionDropdown: React.FC<Props> = ({ user, onUpdate }) => {
         <MoreVertical className="cursor-pointer" />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="min-w-[150px] bg-white">
+      <DropdownMenuContent className="min-w-[150px] bg-background">
         {/* Verify / Unverify toggle */}
         {user.isVerified ? (
           <DropdownMenuItem

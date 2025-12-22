@@ -53,7 +53,7 @@ const renderValue = (row: any, column: Column) => {
   // AMOUNT / NET AMOUNT
   if (column.accessorKey === "amount" || column.accessorKey === "netAmount") {
     return (
-      <span className="font-semibold text-gray-800">
+      <span className="font-semibold text-foreground">
         ${Number(value).toFixed(2)}
       </span>
     );
@@ -96,12 +96,12 @@ export default function TransactionTable({
       {/* বড় স্ক্রিনের জন্য Table */}
       <div className="hidden md:block rounded-xl border overflow-hidden shadow-lg">
         <Table>
-          <TableHeader className="bg-gray-50">
+          <TableHeader className="bg-background">
             <TableRow>
               {columns.map((column) => (
                 <TableHead
                   key={column.accessorKey}
-                  className="font-bold text-gray-600 uppercase tracking-wider"
+                  className="font-bold text-foreground uppercase tracking-wider"
                 >
                   {column.header}
                 </TableHead>

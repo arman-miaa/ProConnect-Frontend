@@ -77,7 +77,7 @@ export default function SellerEarningsPage() {
 
       {/* Financial Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-green-50 border-green-200">
+        <Card className="bg-green-50 dark:bg-background border-green-200">
           <CardHeader className="flex justify-between items-center pb-2">
             <CardTitle className="text-sm font-medium text-green-700">
               Available Balance
@@ -163,7 +163,7 @@ export default function SellerEarningsPage() {
               withdrawAmount > availableBalance ||
               loading
             }
-            className="w-full md:w-auto"
+            className="w-full md:w-auto cursor-pointer"
           >
             {loading ? "Processing..." : "Request Payout"}
           </Button>

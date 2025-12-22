@@ -13,7 +13,7 @@ const UserTable: React.FC<Props> = ({ users, onUpdate, currentUserRole }) => {
   return (
     <div className="overflow-x-auto rounded border">
       <table className="min-w-full table-auto border-collapse hidden md:table">
-        <thead className="bg-gray-100">
+        <thead className="">
           <tr>
             <th className="px-4 py-2 text-left">Name</th>
             <th className="px-4 py-2 text-left">Email</th>
