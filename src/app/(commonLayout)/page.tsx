@@ -1,11 +1,12 @@
 
 import  { FeaturesSection } from "@/components/modules/Home/FeaturesSection";
-import  { StatsSection } from "@/components/modules/Home/StatsSection";
+// import  { StatsSection } from "@/components/modules/Home/StatsSection";
 import { CTASection } from "@/components/modules/Home/CTASection";
 
 import Head from "next/head";
 import { Hero } from "@/components/modules/Home/Hero";
 import { TestimonialsSection } from "@/components/modules/Home/TestimonialsSection";
+import { FAQSection } from "@/components/modules/Home/FAQSection";
 export const dynamic = "force-dynamic";
 export default function Home() {
   return (
@@ -23,9 +24,10 @@ export default function Home() {
         <Hero />
         <FeaturesSection />
       
-        <StatsSection />
+        {/* <StatsSection /> */}
         <TestimonialsSection/>
         <CTASection />
+        <FAQSection/>
       </main>
     </>
   );
