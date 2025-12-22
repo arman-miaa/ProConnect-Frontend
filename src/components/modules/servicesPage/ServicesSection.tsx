@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search,  } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { IService, ServiceCategory } from "@/types/service.interface";
 import { ServiceCard } from "@/components/servicesPage/ServiceCard";
@@ -48,7 +48,7 @@ export function ServicesSection() {
       );
 
       const json = await res.json();
-     
+
       setServices(json?.data?.data || []);
       setTotalPage(json?.data?.meta?.totalPage || 1);
     } catch (err) {
@@ -100,7 +100,7 @@ export function ServicesSection() {
         {/* FILTERS */}
         {/* CATEGORY FILTERS */}
         <div className="flex flex-wrap items-center gap-4 mb-4">
-          <span className="font-semibold text-slate-700">Category:</span>
+          <span className="font-semibold text-foreground">Category:</span>
           <Badge
             onClick={() => {
               setPage(1);
@@ -135,7 +135,7 @@ export function ServicesSection() {
 
         {/* SORT OPTIONS */}
         <div className="flex flex-wrap items-center gap-4 mb-8">
-          <span className="font-semibold text-slate-700">Sort By:</span>
+          <span className="font-semibold text-foreground">Sort By:</span>
           <Badge
             onClick={() => {
               setSort("price");
@@ -180,30 +180,6 @@ export function ServicesSection() {
           </div>
         )}
 
-        {/* PAGINATION */}
-        {/* <div className="flex justify-center items-center gap-4 mt-10">
-          <Button
-            variant="outline"
-            disabled={page <= 1}
-            onClick={() => setPage((p) => p - 1)}
-            className="flex items-center gap-2"
-          >
-            <ChevronLeft className="w-4 h-4" /> Previous
-          </Button>
-
-          <span className="px-4">
-            Page {page} of {totalPage}
-          </span>
-
-          <Button
-            variant="outline"
-            disabled={page >= totalPage}
-            onClick={() => setPage((p) => p + 1)}
-            className="flex items-center gap-2"
-          >
-            Next <ChevronRight className="w-4 h-4" />
-          </Button>
-        </div> */}
         <Pagination
           page={page}
           totalPage={totalPage}

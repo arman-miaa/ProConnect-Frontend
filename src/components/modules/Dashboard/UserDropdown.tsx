@@ -44,7 +44,7 @@ const UserDropdown = ({ userInfo }: UserDropdownProps) => {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-56 ">
+      <DropdownMenuContent align="end" className="w-56 bg-background">
         {/* ---------------- User Info ---------------- */}
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">

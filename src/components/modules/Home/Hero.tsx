@@ -102,7 +102,7 @@ export function Hero() {
                   ))}
                 </div>
                 <span className="text-sm text-muted-foreground">
-                  4.9/5 from 10,000+ reviews
+                  4.9/5 from 10+ reviews
                 </span>
               </div>
             </div>
